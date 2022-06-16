@@ -11,5 +11,5 @@ export async function work(type: OnChainEvent, chain: number, variables?: {[key:
 	const { data, count, toTimestamp } = await fetchData(type, chain, variables)
 	// logger.info({ data }, `${type}: Data from all chains`)
 
-	return {data, count, 'timestamp': toTimestamp}
+	return data
 }
