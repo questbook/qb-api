@@ -1,0 +1,37 @@
+query FundSent($lowerLimit: Int!, $upperLimit: Int!, $grantId: String!) {
+  fundsTransfers(
+    where: {
+      createdAtS_gt: $lowerLimit
+      createdAtS_lte: $upperLimit
+      type: funds_disbursed,
+      grant: $grantId
+    },
+    orderBy: createdAtS
+    orderDirection: desc
+  ) {
+    id
+    type
+    milestone {
+      id
+      title
+      amount
+      amountPaid
+    }
+    grant {
+      id
+      workspace {
+        id
+        chain: supportedNetworks
+      }
+      reward {
+        id
+        committed
+        asset
+        token {
+          label
+          decimal
+        }
+      }
+    }
+  }
+}

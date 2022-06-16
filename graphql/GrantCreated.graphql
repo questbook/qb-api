@@ -1,0 +1,36 @@
+query GrantCreated(
+  $lowerLimit: Int!
+  $upperLimit: Int!
+  $workspaceId: String!
+) {
+  grants(
+    subgraphError: allow
+    where: {
+      updatedAtS_gt: $lowerLimit
+      updatedAtS_lte: $upperLimit
+      workspace: $workspaceId
+    },
+    orderBy: createdAtS
+    orderDirection: desc
+  ) {
+    id
+    title
+    summary
+    workspace {
+      id
+      chain: supportedNetworks
+    }
+    creatorId
+    createdAtS
+    reward {
+      id
+      committed
+      asset
+      token {
+        id
+        label
+        decimal
+      }
+    }
+  }
+}

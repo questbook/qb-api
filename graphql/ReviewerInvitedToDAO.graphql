@@ -1,0 +1,23 @@
+query ReviewerInvitedToDAO($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
+  workspaceMembers(
+    subgraphError: allow
+    where: {
+      updatedAt_gt: $lowerLimit
+      updatedAt_lte: $upperLimit
+      email_not: null
+      accessLevel: reviewer
+      workspace: $workspaceId
+    },
+    orderBy: updatedAt
+    orderDirection: desc
+  ) {
+    email
+    workspace {
+      id
+      title
+      chain: supportedNetworks
+    }
+    actorId
+    updatedAt
+  }
+}

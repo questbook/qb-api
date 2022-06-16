@@ -1,0 +1,46 @@
+query ReviewerAddedToGrantApplication($lowerLimit: Int!, $upperLimit: Int!) {
+  grantApplications(
+    subgraphError: allow
+    where: {
+      updatedAtS_gt: $lowerLimit
+      updatedAtS_lte: $upperLimit
+      version_gt: 1
+      reviewers_not: []
+    }
+  ) {
+    id
+    state
+    version
+    projectName: fields(where: { field_ends_with: "projectName" }) {
+      values {
+        title: value
+      }
+    }
+    createdBy: applicantId
+    createdAtS
+    grant {
+      id
+      reward {
+        id
+        asset
+        committed
+        token {
+          id
+        }
+      }
+      workspace {
+        id
+        chain: supportedNetworks
+      }
+    }
+    milestones {
+      id
+      title
+      amount
+      amountPaid
+      feedbackDao
+      feedbackDev
+      state
+    }
+  }
+}

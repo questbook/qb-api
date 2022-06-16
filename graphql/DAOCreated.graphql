@@ -1,0 +1,22 @@
+query DAOCreated($lowerLimit: Int!, $upperLimit: Int!) {
+  workspaces(
+    subgraphError: allow
+    where: { updatedAtS_gt: $lowerLimit, updatedAtS_lte: $upperLimit }
+    orderBy: createdAtS,
+    orderDirection: desc
+  ) {
+    id
+    title
+    about
+    chain: supportedNetworks
+    createdAtS
+    members (where: {accessLevel_not: reviewer}, orderBy: updatedAt, orderDirection: asc) {
+      actorId
+      addedBy {
+        actorId
+      }
+      accessLevel
+      updatedAt
+    }
+  }
+}
