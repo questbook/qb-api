@@ -52,7 +52,7 @@ function formatDaoCreatedData(result: DaoCreatedQuery) {
 		}
 
 		const retData = {
-			daoID: data.id,
+			id: data.id,
 			daoName: data.title,
 			daoDescription: data.about,
 			chain: getNetworkName(data.chain),
@@ -72,7 +72,7 @@ function formatGrantCreatedData(result: GrantCreatedQuery) {
 	const ret = []
 	for(const data of result['grants']) {
 		const retData = {
-			grantID: data.id,
+			id: data.id,
 			daoID: data.workspace.id,
 			grantTitle: data.title,
 			grantDescription: data.summary,
@@ -95,7 +95,7 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 	const ret = []
 	for(const data of result['grantApplications']) {
 		const retData = {
-			applicationID: data.id,
+			id: data.id,
 			grantID: data.grant.id,
 			daoID: data.grant.workspace.id,
 			title: data.projectName[0].values[0].title,
@@ -130,7 +130,7 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 	const ret = []
 	for(const data of result['grantApplications']) {
 		const retData = {
-			applicationID: data.id,
+			id: data.id,
 			grantID: data.grant.id,
 			daoID: data.grant.workspace.id,
 			chain: getNetworkName(data.grant.workspace.chain),
@@ -151,7 +151,7 @@ function formatFundSentData(result: FundSentQuery) {
 	const ret = []
 	for(const data of result['fundsTransfers']) {
 		const retData = {
-			applicationID: data.id,
+			id: data.id,
 			grantID: data.grant.id,
 			daoID: data.grant.workspace.id,
 			milestoneID: data.milestone.id,
@@ -177,7 +177,7 @@ function formatReviewerInvitedToDaoData(result: ReviewerInvitedToDaoQuery) {
 	const ret = []
 	for(const data of result['workspaceMembers']) {
 		const retData = {
-			daoID: data.workspace.id,
+			id: data.workspace.id,
 			chain: getNetworkName(data.workspace.chain),
 			email: data.email,
 			address: data.actorId,
