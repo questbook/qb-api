@@ -157,6 +157,7 @@ function formatFundSentData(result: FundSentQuery) {
 			milestoneID: data.milestone.id,
 			chain: getNetworkName(data.grant.workspace.chain),
 			amount: ethers.utils.formatUnits(data.milestone.amount, data.grant.reward.token && data.grant.reward.token.label ? data.grant.reward.token.decimal : CHAIN_INFO[getSupportedChainIdFromSupportedNetwork(data.grant.workspace.chain[0] as SupportedNetwork)].supportedCurrencies[data.grant.reward.asset.toLowerCase()].decimal),
+			amountPaid: ethers.utils.formatUnits(data.milestone.amountPaid, data.grant.reward.token && data.grant.reward.token.label ? data.grant.reward.token.decimal : CHAIN_INFO[getSupportedChainIdFromSupportedNetwork(data.grant.workspace.chain[0] as SupportedNetwork)].supportedCurrencies[data.grant.reward.asset.toLowerCase()].decimal),
 			currency: getRewardToken(data.grant.reward, getSupportedChainIdFromSupportedNetwork(data.grant.workspace.chain[0] as SupportedNetwork)),
 		}
 
