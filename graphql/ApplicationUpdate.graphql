@@ -1,31 +1,31 @@
 query ApplicationUpdate(
   $lowerLimit: Int!
   $upperLimit: Int!
-  $grantId: String!
+  $workspaceId: String!
 ) {
-  grantApplications(
-    subgraphError: allow
-    where: {
-      updatedAtS_gt: $lowerLimit
-      updatedAtS_lte: $upperLimit
-      version_gt: 1
-      state_not_in: [submitted]
-      grant: $grantId
-    },
-    orderBy: updatedAtS
-    orderDirection: desc
-  ) {
-    id
-    grant {
-      id
-      workspace {
-        id
-        chain: supportedNetworks
+  grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+    applications(
+      where: {
+        updatedAtS_gt: $lowerLimit
+        updatedAtS_lte: $upperLimit
+        version_gt: 1
+        state_not_in: [submitted]
       }
+      orderBy: updatedAtS
+      orderDirection: desc
+    ) {
+      id
+      grant {
+        id
+        workspace {
+          id
+          chain: supportedNetworks
+        }
+      }
+      state
+      version
+      updatedAtS
+      feedbackDao
     }
-    state
-    version
-    updatedAtS
-    feedbackDao
   }
 }

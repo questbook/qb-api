@@ -1,51 +1,55 @@
-query GrantAppliedTo($lowerLimit: Int!, $upperLimit: Int!, $grantId: String!) {
-  grantApplications(
-    subgraphError: allow
-    where: {
-      updatedAtS_gt: $lowerLimit
-      updatedAtS_lte: $upperLimit
-      version: 1,
-      grant: $grantId
-    }
-  ) {
-    id
-    projectName: fields(where: { field_ends_with: "projectName" }) {
-      values {
-        title: value
+query GrantAppliedTo(
+  $lowerLimit: Int!
+  $upperLimit: Int!
+  $workspaceId: String!
+) {
+  grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+    applications(
+      where: {
+        updatedAtS_gt: $lowerLimit
+        updatedAtS_lte: $upperLimit
+        version: 1
       }
-    }
-    applicantEmail: fields(where: { field_ends_with: "applicantEmail" }) {
-      values {
-        email: value
-      }
-    }
-    createdBy: applicantId
-    createdAtS
-    grant {
+    ) {
       id
-      reward {
-        id
-        asset
-        committed
-        token {
-          id
-          label
-          decimal
+      projectName: fields(where: { field_ends_with: "projectName" }) {
+        values {
+          title: value
         }
       }
-      workspace {
-        id
-        chain: supportedNetworks
+      applicantEmail: fields(where: { field_ends_with: "applicantEmail" }) {
+        values {
+          email: value
+        }
       }
-    }
-    milestones {
-      id
-      title
-      amount
-      amountPaid
-      feedbackFromDAO: feedbackDao
-      feedbackFromDev: feedbackDev
-      state
+      createdBy: applicantId
+      createdAtS
+      grant {
+        id
+        reward {
+          id
+          asset
+          committed
+          token {
+            id
+            label
+            decimal
+          }
+        }
+        workspace {
+          id
+          chain: supportedNetworks
+        }
+      }
+      milestones {
+        id
+        title
+        amount
+        amountPaid
+        feedbackFromDAO: feedbackDao
+        feedbackFromDev: feedbackDev
+        state
+      }
     }
   }
 }

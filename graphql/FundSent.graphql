@@ -1,35 +1,36 @@
-query FundSent($lowerLimit: Int!, $upperLimit: Int!, $grantId: String!) {
-  fundsTransfers(
-    where: {
-      createdAtS_gt: $lowerLimit
-      createdAtS_lte: $upperLimit
-      type: funds_disbursed,
-      grant: $grantId
-    },
-    orderBy: createdAtS
-    orderDirection: desc
-  ) {
-    id
-    type
-    milestone {
-      id
-      title
-      amount
-      amountPaid
-    }
-    grant {
-      id
-      workspace {
-        id
-        chain: supportedNetworks
+query FundSent($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
+  grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+    fundTransfers(
+      where: {
+        createdAtS_gt: $lowerLimit
+        createdAtS_lte: $upperLimit
+        type: funds_disbursed
       }
-      reward {
+      orderBy: createdAtS
+      orderDirection: desc
+    ) {
+      id
+      type
+      milestone {
         id
-        committed
-        asset
-        token {
-          label
-          decimal
+        title
+        amount
+        amountPaid
+      }
+      grant {
+        id
+        workspace {
+          id
+          chain: supportedNetworks
+        }
+        reward {
+          id
+          committed
+          asset
+          token {
+            label
+            decimal
+          }
         }
       }
     }

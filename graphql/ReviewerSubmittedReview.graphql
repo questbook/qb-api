@@ -1,20 +1,26 @@
-query ReviewerSubmittedReview($lowerLimit: Int!, $upperLimit: Int!) {
-  reviews(subgraphError: allow, where: { createdAtS_gt: $lowerLimit, createdAtS_lte: $upperLimit }) {
+query ReviewerSubmittedReview(
+  $lowerLimit: Int!
+  $upperLimit: Int!
+  $workspaceId: String!
+) {
+  grants(subgraphError: allow, where: { workspace: $workspaceId }) {
     id
-    application {
+    applications {
       id
-      grant {
+      reviews(
+        where: { createdAtS_gt: $lowerLimit, createdAtS_lte: $upperLimit }
+      ) {
         id
+        reviewerId
+        reviewer {
+          actorId
+          workspace {
+            id
+            chain: supportedNetworks
+          }
+        }
+        publicReviewDataHash
       }
     }
-    reviewerId
-    reviewer {
-      actorId
-      workspace {
-        id
-        chain: supportedNetworks
-      }
-    }
-    publicReviewDataHash
   }
 }

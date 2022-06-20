@@ -178,10 +178,10 @@ function formatReviewerInvitedToDaoData(result: ReviewerInvitedToDaoQuery) {
 	const ret = []
 	for(const data of result['workspaceMembers']) {
 		const retData = {
-			id: data.workspace.id,
+			id: data.actorId,
 			chain: getNetworkName(data.workspace.chain),
 			email: data.email,
-			address: data.actorId,
+			workspaceId: data.workspace.id,
 			updatedAt: moment.unix(data.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
 		}
 
