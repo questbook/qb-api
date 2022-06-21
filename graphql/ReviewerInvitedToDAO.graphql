@@ -1,4 +1,8 @@
-query ReviewerInvitedToDAO($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
+query ReviewerInvitedToDAO(
+  $lowerLimit: Int!
+  $upperLimit: Int!
+  $workspaceId: String!
+) {
   workspaceMembers(
     subgraphError: allow
     where: {
@@ -7,10 +11,11 @@ query ReviewerInvitedToDAO($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: S
       email_not: null
       accessLevel: reviewer
       workspace: $workspaceId
-    },
+    }
     orderBy: updatedAt
     orderDirection: desc
   ) {
+    id
     email
     workspace {
       id

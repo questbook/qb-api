@@ -4,6 +4,21 @@ query GrantAppliedTo(
   $workspaceId: String!
 ) {
   grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+    id
+    reward {
+      id
+      asset
+      committed
+      token {
+        id
+        label
+        decimal
+      }
+    }
+    workspace {
+      id
+      chain: supportedNetworks
+    }
     applications(
       where: {
         updatedAtS_gt: $lowerLimit
@@ -24,23 +39,7 @@ query GrantAppliedTo(
       }
       createdBy: applicantId
       createdAtS
-      grant {
-        id
-        reward {
-          id
-          asset
-          committed
-          token {
-            id
-            label
-            decimal
-          }
-        }
-        workspace {
-          id
-          chain: supportedNetworks
-        }
-      }
+      updatedAtS
       milestones {
         id
         title

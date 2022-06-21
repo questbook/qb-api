@@ -3691,7 +3691,7 @@ export type ApplicationUpdateQueryVariables = Exact<{
 }>;
 
 
-export type ApplicationUpdateQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', applications: Array<{ __typename?: 'GrantApplication', id: string, state: ApplicationState, version: number, updatedAtS: number, feedbackDao?: string | null, grant: { __typename?: 'Grant', id: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> } } }> }> };
+export type ApplicationUpdateQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, applications: Array<{ __typename?: 'GrantApplication', id: string, state: ApplicationState, version: number, updatedAtS: number, feedbackDao?: string | null }> }> };
 
 export type DaoCreatedQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -3708,7 +3708,7 @@ export type FundSentQueryVariables = Exact<{
 }>;
 
 
-export type FundSentQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', fundTransfers: Array<{ __typename?: 'FundsTransfer', id: string, type: FundsTransferType, milestone?: { __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string } | null, grant: { __typename?: 'Grant', id: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, committed: string, asset: string, token?: { __typename?: 'Token', label: string, decimal: number } | null } } }> }> };
+export type FundSentQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, committed: string, asset: string, token?: { __typename?: 'Token', label: string, decimal: number } | null }, fundTransfers: Array<{ __typename?: 'FundsTransfer', id: string, type: FundsTransferType, milestone?: { __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string } | null }> }> };
 
 export type GrantAppliedToQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -3717,7 +3717,7 @@ export type GrantAppliedToQueryVariables = Exact<{
 }>;
 
 
-export type GrantAppliedToQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', applications: Array<{ __typename?: 'GrantApplication', id: string, createdAtS: number, createdBy: string, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }>, applicantEmail: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', email: string }> }>, grant: { __typename?: 'Grant', id: string, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null }, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> } }, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, state: MilestoneState, feedbackFromDAO?: string | null, feedbackFromDev?: string | null }> }> }> };
+export type GrantAppliedToQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null }, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, applications: Array<{ __typename?: 'GrantApplication', id: string, createdAtS: number, updatedAtS: number, createdBy: string, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }>, applicantEmail: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', email: string }> }>, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, state: MilestoneState, feedbackFromDAO?: string | null, feedbackFromDev?: string | null }> }> }> };
 
 export type GrantCreatedQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -3726,7 +3726,7 @@ export type GrantCreatedQueryVariables = Exact<{
 }>;
 
 
-export type GrantCreatedQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, title: string, summary: string, creatorId: string, createdAtS: number, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, committed: string, asset: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null } }> };
+export type GrantCreatedQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, title: string, summary: string, creatorId: string, createdAtS: number, updatedAtS?: number | null, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, committed: string, asset: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null } }> };
 
 export type ReviewerAddedToGrantApplicationQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -3735,7 +3735,7 @@ export type ReviewerAddedToGrantApplicationQueryVariables = Exact<{
 }>;
 
 
-export type ReviewerAddedToGrantApplicationQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', applications: Array<{ __typename?: 'GrantApplication', id: string, state: ApplicationState, version: number, createdAtS: number, createdBy: string, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }>, grant: { __typename?: 'Grant', id: string, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string } | null }, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> } }, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, feedbackDao?: string | null, feedbackDev?: string | null, state: MilestoneState }> }> }> };
+export type ReviewerAddedToGrantApplicationQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string } | null }, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, applications: Array<{ __typename?: 'GrantApplication', id: string, state: ApplicationState, version: number, createdAtS: number, createdBy: string, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }>, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, feedbackDao?: string | null, feedbackDev?: string | null, state: MilestoneState }> }> }> };
 
 export type ReviewerInvitedToDaoQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -3744,7 +3744,7 @@ export type ReviewerInvitedToDaoQueryVariables = Exact<{
 }>;
 
 
-export type ReviewerInvitedToDaoQuery = { __typename?: 'Query', workspaceMembers: Array<{ __typename?: 'WorkspaceMember', email?: string | null, actorId: string, updatedAt: number, workspace: { __typename?: 'Workspace', id: string, title: string, chain: Array<SupportedNetwork> } }> };
+export type ReviewerInvitedToDaoQuery = { __typename?: 'Query', workspaceMembers: Array<{ __typename?: 'WorkspaceMember', id: string, email?: string | null, actorId: string, updatedAt: number, workspace: { __typename?: 'Workspace', id: string, title: string, chain: Array<SupportedNetwork> } }> };
 
 export type ReviewerSubmittedReviewQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -3753,25 +3753,23 @@ export type ReviewerSubmittedReviewQueryVariables = Exact<{
 }>;
 
 
-export type ReviewerSubmittedReviewQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, applications: Array<{ __typename?: 'GrantApplication', id: string, reviews: Array<{ __typename?: 'Review', id: string, reviewerId: string, publicReviewDataHash?: string | null, reviewer?: { __typename?: 'WorkspaceMember', actorId: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> } } | null }> }> }> };
+export type ReviewerSubmittedReviewQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, applications: Array<{ __typename?: 'GrantApplication', id: string, reviews: Array<{ __typename?: 'Review', id: string, reviewerId: string, publicReviewDataHash?: string | null, createdAtS: number, reviewer?: { __typename?: 'WorkspaceMember', actorId: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> } } | null }> }> }> };
 
 
 export const ApplicationUpdateDocument = gql`
     query ApplicationUpdate($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
   grants(subgraphError: allow, where: {workspace: $workspaceId}) {
+    id
+    workspace {
+      id
+      chain: supportedNetworks
+    }
     applications(
       where: {updatedAtS_gt: $lowerLimit, updatedAtS_lte: $upperLimit, version_gt: 1, state_not_in: [submitted]}
       orderBy: updatedAtS
       orderDirection: desc
     ) {
       id
-      grant {
-        id
-        workspace {
-          id
-          chain: supportedNetworks
-        }
-      }
       state
       version
       updatedAtS
@@ -3870,6 +3868,20 @@ export type DaoCreatedQueryResult = Apollo.QueryResult<DaoCreatedQuery, DaoCreat
 export const FundSentDocument = gql`
     query FundSent($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
   grants(subgraphError: allow, where: {workspace: $workspaceId}) {
+    id
+    workspace {
+      id
+      chain: supportedNetworks
+    }
+    reward {
+      id
+      committed
+      asset
+      token {
+        label
+        decimal
+      }
+    }
     fundTransfers(
       where: {createdAtS_gt: $lowerLimit, createdAtS_lte: $upperLimit, type: funds_disbursed}
       orderBy: createdAtS
@@ -3882,22 +3894,6 @@ export const FundSentDocument = gql`
         title
         amount
         amountPaid
-      }
-      grant {
-        id
-        workspace {
-          id
-          chain: supportedNetworks
-        }
-        reward {
-          id
-          committed
-          asset
-          token {
-            label
-            decimal
-          }
-        }
       }
     }
   }
@@ -3936,6 +3932,21 @@ export type FundSentQueryResult = Apollo.QueryResult<FundSentQuery, FundSentQuer
 export const GrantAppliedToDocument = gql`
     query GrantAppliedTo($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
   grants(subgraphError: allow, where: {workspace: $workspaceId}) {
+    id
+    reward {
+      id
+      asset
+      committed
+      token {
+        id
+        label
+        decimal
+      }
+    }
+    workspace {
+      id
+      chain: supportedNetworks
+    }
     applications(
       where: {updatedAtS_gt: $lowerLimit, updatedAtS_lte: $upperLimit, version: 1}
     ) {
@@ -3952,23 +3963,7 @@ export const GrantAppliedToDocument = gql`
       }
       createdBy: applicantId
       createdAtS
-      grant {
-        id
-        reward {
-          id
-          asset
-          committed
-          token {
-            id
-            label
-            decimal
-          }
-        }
-        workspace {
-          id
-          chain: supportedNetworks
-        }
-      }
+      updatedAtS
       milestones {
         id
         title
@@ -4029,6 +4024,7 @@ export const GrantCreatedDocument = gql`
     }
     creatorId
     createdAtS
+    updatedAtS
     reward {
       id
       committed
@@ -4075,6 +4071,19 @@ export type GrantCreatedQueryResult = Apollo.QueryResult<GrantCreatedQuery, Gran
 export const ReviewerAddedToGrantApplicationDocument = gql`
     query ReviewerAddedToGrantApplication($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
   grants(subgraphError: allow, where: {workspace: $workspaceId}) {
+    id
+    reward {
+      id
+      asset
+      committed
+      token {
+        id
+      }
+    }
+    workspace {
+      id
+      chain: supportedNetworks
+    }
     applications(
       where: {updatedAtS_gt: $lowerLimit, updatedAtS_lte: $upperLimit, version_gt: 1, reviewers_not: []}
     ) {
@@ -4088,21 +4097,6 @@ export const ReviewerAddedToGrantApplicationDocument = gql`
       }
       createdBy: applicantId
       createdAtS
-      grant {
-        id
-        reward {
-          id
-          asset
-          committed
-          token {
-            id
-          }
-        }
-        workspace {
-          id
-          chain: supportedNetworks
-        }
-      }
       milestones {
         id
         title
@@ -4154,6 +4148,7 @@ export const ReviewerInvitedToDaoDocument = gql`
     orderBy: updatedAt
     orderDirection: desc
   ) {
+    id
     email
     workspace {
       id
@@ -4212,6 +4207,7 @@ export const ReviewerSubmittedReviewDocument = gql`
           }
         }
         publicReviewDataHash
+        createdAtS
       }
     }
   }

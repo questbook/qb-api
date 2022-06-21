@@ -4,6 +4,11 @@ query ApplicationUpdate(
   $workspaceId: String!
 ) {
   grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+    id
+    workspace {
+      id
+      chain: supportedNetworks
+    }
     applications(
       where: {
         updatedAtS_gt: $lowerLimit
@@ -15,13 +20,6 @@ query ApplicationUpdate(
       orderDirection: desc
     ) {
       id
-      grant {
-        id
-        workspace {
-          id
-          chain: supportedNetworks
-        }
-      }
       state
       version
       updatedAtS

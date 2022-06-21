@@ -1,5 +1,19 @@
 query FundSent($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
   grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+    id
+    workspace {
+      id
+      chain: supportedNetworks
+    }
+    reward {
+      id
+      committed
+      asset
+      token {
+        label
+        decimal
+      }
+    }
     fundTransfers(
       where: {
         createdAtS_gt: $lowerLimit
@@ -16,22 +30,6 @@ query FundSent($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
         title
         amount
         amountPaid
-      }
-      grant {
-        id
-        workspace {
-          id
-          chain: supportedNetworks
-        }
-        reward {
-          id
-          committed
-          asset
-          token {
-            label
-            decimal
-          }
-        }
       }
     }
   }
