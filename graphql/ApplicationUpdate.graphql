@@ -5,6 +5,7 @@ query ApplicationUpdate(
 ) {
   grants(subgraphError: allow, where: { workspace: $workspaceId }) {
     id
+    title
     workspace {
       id
       chain: supportedNetworks
@@ -20,6 +21,11 @@ query ApplicationUpdate(
       orderDirection: desc
     ) {
       id
+      projectName: fields(where: { field_ends_with: "projectName" }) {
+        values {
+          title: value
+        }
+      }
       state
       version
       updatedAtS

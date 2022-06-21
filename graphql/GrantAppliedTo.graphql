@@ -5,6 +5,7 @@ query GrantAppliedTo(
 ) {
   grants(subgraphError: allow, where: { workspace: $workspaceId }) {
     id
+    title
     reward {
       id
       asset

@@ -129,6 +129,7 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 				id: `${grant.id}.${data.id}.${data.updatedAtS}`,
 				applicationID: data.id,
 				grantID: grant.id,
+				grantTitle: grant.title,
 				daoID: grant.workspace.id,
 				title: data.projectName[0].values[0].title,
 				createdAt: moment.unix(data.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
@@ -201,7 +202,9 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 			const retData = {
 				id: `${data.id}.${grant.id}.${data.updatedAtS}`,
 				applicationID: data.id,
+				title: data.projectName[0].values[0].title,
 				grantID: grant.id,
+				grantTitle: grant.title,
 				daoID: grant.workspace.id,
 				chain: getNetworkName(grant.workspace.chain),
 				state: data.state,
