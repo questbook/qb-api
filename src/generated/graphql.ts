@@ -3691,7 +3691,7 @@ export type ApplicationUpdateQueryVariables = Exact<{
 }>;
 
 
-export type ApplicationUpdateQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, title: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, applications: Array<{ __typename?: 'GrantApplication', id: string, state: ApplicationState, version: number, updatedAtS: number, feedbackDao?: string | null, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }> }> }> };
+export type ApplicationUpdateQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, title: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null }, applications: Array<{ __typename?: 'GrantApplication', id: string, createdAtS: number, updatedAtS: number, state: ApplicationState, feedbackDao?: string | null, createdBy: string, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }>, fundingAsked: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', fundingAsk: string }> }>, applicantEmail: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', email: string }> }>, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, state: MilestoneState, feedbackFromDAO?: string | null, feedbackFromDev?: string | null }> }> }> };
 
 export type DaoCreatedQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -3708,7 +3708,7 @@ export type FundSentQueryVariables = Exact<{
 }>;
 
 
-export type FundSentQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, committed: string, asset: string, token?: { __typename?: 'Token', label: string, decimal: number } | null }, fundTransfers: Array<{ __typename?: 'FundsTransfer', id: string, type: FundsTransferType, milestone?: { __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string } | null }> }> };
+export type FundSentQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, committed: string, asset: string, token?: { __typename?: 'Token', label: string, decimal: number } | null }, fundTransfers: Array<{ __typename?: 'FundsTransfer', id: string, type: FundsTransferType, milestone?: { __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string } | null, application?: { __typename?: 'GrantApplication', id: string, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }> } | null }> }> };
 
 export type GrantAppliedToQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -3717,7 +3717,7 @@ export type GrantAppliedToQueryVariables = Exact<{
 }>;
 
 
-export type GrantAppliedToQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, title: string, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null }, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, applications: Array<{ __typename?: 'GrantApplication', id: string, createdAtS: number, updatedAtS: number, createdBy: string, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }>, applicantEmail: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', email: string }> }>, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, state: MilestoneState, feedbackFromDAO?: string | null, feedbackFromDev?: string | null }> }> }> };
+export type GrantAppliedToQuery = { __typename?: 'Query', grants: Array<{ __typename?: 'Grant', id: string, title: string, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null }, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, applications: Array<{ __typename?: 'GrantApplication', id: string, createdAtS: number, updatedAtS: number, state: ApplicationState, createdBy: string, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }>, fundingAsked: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', fundingAsk: string }> }>, applicantEmail: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', email: string }> }>, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, state: MilestoneState, feedbackFromDAO?: string | null, feedbackFromDev?: string | null }> }> }> };
 
 export type GrantCreatedQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -3765,6 +3765,16 @@ export const ApplicationUpdateDocument = gql`
       id
       chain: supportedNetworks
     }
+    reward {
+      id
+      asset
+      committed
+      token {
+        id
+        label
+        decimal
+      }
+    }
     applications(
       where: {updatedAtS_gt: $lowerLimit, updatedAtS_lte: $upperLimit, version_gt: 1, state_not_in: [submitted]}
       orderBy: updatedAtS
@@ -3776,9 +3786,29 @@ export const ApplicationUpdateDocument = gql`
           title: value
         }
       }
-      state
-      version
+      fundingAsked: fields(where: {field_ends_with: "fundingAsk"}) {
+        values {
+          fundingAsk: value
+        }
+      }
+      applicantEmail: fields(where: {field_ends_with: "applicantEmail"}) {
+        values {
+          email: value
+        }
+      }
+      createdBy: applicantId
+      createdAtS
       updatedAtS
+      milestones {
+        id
+        title
+        amount
+        amountPaid
+        feedbackFromDAO: feedbackDao
+        feedbackFromDev: feedbackDev
+        state
+      }
+      state
       feedbackDao
     }
   }
@@ -3901,6 +3931,14 @@ export const FundSentDocument = gql`
         amount
         amountPaid
       }
+      application {
+        id
+        projectName: fields(where: {field_ends_with: "projectName"}) {
+          values {
+            title: value
+          }
+        }
+      }
     }
   }
 }
@@ -3963,6 +4001,11 @@ export const GrantAppliedToDocument = gql`
           title: value
         }
       }
+      fundingAsked: fields(where: {field_ends_with: "fundingAsk"}) {
+        values {
+          fundingAsk: value
+        }
+      }
       applicantEmail: fields(where: {field_ends_with: "applicantEmail"}) {
         values {
           email: value
@@ -3980,6 +4023,7 @@ export const GrantAppliedToDocument = gql`
         feedbackFromDev: feedbackDev
         state
       }
+      state
     }
   }
 }

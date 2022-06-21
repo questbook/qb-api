@@ -53,8 +53,8 @@ function formatData(event: OnChainEvent, data: any) {
 
 function formatDaoCreatedData(result: DaoCreatedQuery) {
 	const ret = []
-	for(const data of result['workspaces']) {
-		const members = data.members
+	for(const workspace of result['workspaces']) {
+		const members = workspace.members
 		let createdBy = null
 		if(members.length > 0) {
 			const owner = members.find((member) => member.accessLevel === 'owner')
@@ -66,12 +66,12 @@ function formatDaoCreatedData(result: DaoCreatedQuery) {
 		}
 
 		const retData = {
-			id: `${data.id}.${data.createdAtS}`,
-			daoID: data.id,
-			daoName: data.title,
-			daoDescription: data.about,
-			chain: getNetworkName(data.chain),
-			createdAt: moment.unix(data.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
+			id: `${workspace.id}.${workspace.createdAtS}`,
+			daoID: workspace.id,
+			daoName: workspace.title,
+			daoDescription: workspace.about,
+			chain: getNetworkName(workspace.chain),
+			createdAt: moment.unix(workspace.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
 			createdBy,
 		}
 
@@ -85,30 +85,30 @@ function formatDaoCreatedData(result: DaoCreatedQuery) {
 
 function formatGrantCreatedData(result: GrantCreatedQuery) {
 	const ret = []
-	for(const data of result['grants']) {
+	for(const grant of result['grants']) {
 		const retData = {
-			id: `${data.workspace.id}.${data.id}.${data.updatedAtS}`,
-			grantID: data.id,
-			daoID: data.workspace.id,
-			grantTitle: data.title,
-			grantDescription: data.summary,
-			chain: getNetworkName(data.workspace.chain),
-			createdAt: moment.unix(data.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
-			createdBy: data.creatorId,
+			id: `${grant.workspace.id}.${grant.id}.${grant.updatedAtS}`,
+			grantID: grant.id,
+			daoID: grant.workspace.id,
+			grantTitle: grant.title,
+			grantDescription: grant.summary,
+			chain: getNetworkName(grant.workspace.chain),
+			createdAt: moment.unix(grant.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
+			createdBy: grant.creatorId,
 			amount: ethers.utils.formatUnits(
-				data.reward.committed,
-				data.reward.token && data.reward.token.label
-					? data.reward.token.decimal
+				grant.reward.committed,
+				grant.reward.token && grant.reward.token.label
+					? grant.reward.token.decimal
 					: CHAIN_INFO[
 						getSupportedChainIdFromSupportedNetwork(
-                data.workspace.chain[0] as SupportedNetwork,
+                grant.workspace.chain[0] as SupportedNetwork,
 						)
-					].supportedCurrencies[data.reward.asset.toLowerCase()].decimal,
+					].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
 			),
 			currency: getRewardToken(
-				data.reward,
+				grant.reward,
 				getSupportedChainIdFromSupportedNetwork(
-          data.workspace.chain[0] as SupportedNetwork,
+          grant.workspace.chain[0] as SupportedNetwork,
 				),
 			),
 		}
@@ -124,38 +124,39 @@ function formatGrantCreatedData(result: GrantCreatedQuery) {
 function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 	const ret = []
 	for(const grant of result['grants']) {
-		for(const data of grant.applications) {
+		for(const application of grant.applications) {
 			const retData = {
-				id: `${grant.id}.${data.id}.${data.updatedAtS}`,
-				applicationID: data.id,
+				id: `${grant.id}.${application.id}.${application.updatedAtS}`,
+				applicationID: application.id,
 				grantID: grant.id,
 				grantTitle: grant.title,
 				daoID: grant.workspace.id,
-				title: data.projectName[0].values[0].title,
-				createdAt: moment.unix(data.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
-				createdBy: data.createdBy,
+				title: application.projectName[0].values[0].title,
+				createdAt: moment.unix(application.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
+				createdBy: application.createdBy,
 				chain: getNetworkName(grant.workspace.chain),
+				state: application.state,
 				publicEmail:
-        data.applicantEmail.length > 0
-        	? data.applicantEmail[0].values[0].email
-        	: null,
-				askAmount: ethers.utils.formatUnits(
-					grant.reward.committed,
+          application.applicantEmail.length > 0
+          	? application.applicantEmail[0].values[0].email
+          	: null,
+				fundingAsk: ethers.utils.formatUnits(
+					application.fundingAsked[0].values[0].fundingAsk,
 					grant.reward.token && grant.reward.token.label
 						? grant.reward.token.decimal
 						: CHAIN_INFO[
 							getSupportedChainIdFromSupportedNetwork(
-                grant.workspace.chain[0] as SupportedNetwork,
+                  grant.workspace.chain[0] as SupportedNetwork,
 							)
 						].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
 				),
 				currency: getRewardToken(
 					grant.reward,
 					getSupportedChainIdFromSupportedNetwork(
-          grant.workspace.chain[0] as SupportedNetwork,
+            grant.workspace.chain[0] as SupportedNetwork,
 					),
 				),
-				milestones: data.milestones.map((milestone) => {
+				milestones: application.milestones.map((milestone) => {
 					return {
 						milestoneID: milestone.id,
 						title: milestone.title,
@@ -165,9 +166,10 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 								? grant.reward.token.decimal
 								: CHAIN_INFO[
 									getSupportedChainIdFromSupportedNetwork(
-                    grant.workspace.chain[0] as SupportedNetwork,
+                      grant.workspace.chain[0] as SupportedNetwork,
 									)
-								].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
+								].supportedCurrencies[grant.reward.asset.toLowerCase()]
+									.decimal,
 						),
 						amountPaid: ethers.utils.formatUnits(
 							milestone.amountPaid,
@@ -175,9 +177,10 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 								? grant.reward.token.decimal
 								: CHAIN_INFO[
 									getSupportedChainIdFromSupportedNetwork(
-                    grant.workspace.chain[0] as SupportedNetwork,
+                      grant.workspace.chain[0] as SupportedNetwork,
 									)
-								].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
+								].supportedCurrencies[grant.reward.asset.toLowerCase()]
+									.decimal,
 						),
 						state: milestone.state,
 						feedbackFromDao: milestone.feedbackFromDAO,
@@ -198,18 +201,34 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 	const ret = []
 	for(const grant of result['grants']) {
-		for(const data of grant.applications) {
+		for(const application of grant.applications) {
 			const retData = {
-				id: `${data.id}.${grant.id}.${data.updatedAtS}`,
-				applicationID: data.id,
-				title: data.projectName[0].values[0].title,
+				id: `${application.id}.${grant.id}.${application.updatedAtS}`,
+				applicationID: application.id,
+				title: application.projectName[0].values[0].title,
 				grantID: grant.id,
 				grantTitle: grant.title,
 				daoID: grant.workspace.id,
 				chain: getNetworkName(grant.workspace.chain),
-				state: data.state,
-				feedback: data.feedbackDao,
-				updatedAt: moment.unix(data.updatedAtS).format('YYYY-MM-DD HH:mm:ss'),
+				state: application.state,
+				feedback: application.feedbackDao,
+				fundingAsk: ethers.utils.formatUnits(
+					application.fundingAsked[0].values[0].fundingAsk,
+					grant.reward.token && grant.reward.token.label
+						? grant.reward.token.decimal
+						: CHAIN_INFO[
+							getSupportedChainIdFromSupportedNetwork(
+                  grant.workspace.chain[0] as SupportedNetwork,
+							)
+						].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
+				),
+				currency: getRewardToken(
+					grant.reward,
+					getSupportedChainIdFromSupportedNetwork(
+            grant.workspace.chain[0] as SupportedNetwork,
+					),
+				),
+				updatedAt: moment.unix(application.updatedAtS).format('YYYY-MM-DD HH:mm:ss'),
 			}
 
 			// logger.info({ data, retData }, `${OnChainEvent.ApplicationUpdate}: FORMAT DATA`)
@@ -224,15 +243,18 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 function formatFundSentData(result: FundSentQuery) {
 	const ret = []
 	for(const grant of result['grants']) {
-		for(const data of grant.fundTransfers) {
+		for(const fundTransfer of grant.fundTransfers) {
 			const retData = {
-				id: `${grant.id}.${data.id}`,
+				id: `${grant.id}.${fundTransfer.id}`,
 				grantID: grant.id,
 				daoID: grant.workspace.id,
-				milestoneID: data.milestone.id,
+				milestoneID: fundTransfer.milestone.id,
+				milestoneTitle: fundTransfer.milestone.title,
+				applicationID: fundTransfer.application.id,
+				applicationTitle: fundTransfer.application.projectName[0].values[0].title,
 				chain: getNetworkName(grant.workspace.chain),
 				amount: ethers.utils.formatUnits(
-					data.milestone.amount,
+					fundTransfer.milestone.amount,
 					grant.reward.token && grant.reward.token.label
 						? grant.reward.token.decimal
 						: CHAIN_INFO[
@@ -242,7 +264,7 @@ function formatFundSentData(result: FundSentQuery) {
 						].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
 				),
 				amountPaid: ethers.utils.formatUnits(
-					data.milestone.amountPaid,
+					fundTransfer.milestone.amountPaid,
 					grant.reward.token && grant.reward.token.label
 						? grant.reward.token.decimal
 						: CHAIN_INFO[
@@ -277,14 +299,14 @@ function formatReviewerAddedToGrantApplicationData(
 
 function formatReviewerInvitedToDaoData(result: ReviewerInvitedToDaoQuery) {
 	const ret = []
-	for(const data of result['workspaceMembers']) {
+	for(const workspaceMember of result['workspaceMembers']) {
 		const retData = {
-			id: `${data.id}.${data.updatedAt}`,
-			address: data.actorId,
-			chain: getNetworkName(data.workspace.chain),
-			email: data.email,
-			workspaceId: data.workspace.id,
-			updatedAt: moment.unix(data.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+			id: `${workspaceMember.id}.${workspaceMember.updatedAt}`,
+			address: workspaceMember.actorId,
+			chain: getNetworkName(workspaceMember.workspace.chain),
+			email: workspaceMember.email,
+			workspaceId: workspaceMember.workspace.id,
+			updatedAt: moment.unix(workspaceMember.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
 		}
 
 		// logger.info({ data, retData }, `${OnChainEvent.ReviewerInvitedToDao}: FORMAT DATA`)
@@ -301,25 +323,25 @@ async function formatReviewerSubmittedReviewData(
 	const ret = []
 	for(const grant of result['grants']) {
 		for(const application of grant.applications) {
-			for(const data of application.reviews) {
-				const stringData = data.publicReviewDataHash
-					? await getFromIPFS(data.publicReviewDataHash)
+			for(const review of application.reviews) {
+				const stringData = review.publicReviewDataHash
+					? await getFromIPFS(review.publicReviewDataHash)
 					: ''
 				let json = {}
 				try {
 					json = JSON.parse(stringData)
 				} catch(e) {}
 
-				if(!data.reviewer) {
+				if(!review.reviewer) {
 					continue
 				}
 
 				const retData = {
-					id: `${grant.id}.${application.id}.${data.id}.${data.createdAtS}`,
-					daoID: data.reviewer.workspace.id,
+					id: `${grant.id}.${application.id}.${review.id}.${review.createdAtS}`,
+					daoID: review.reviewer.workspace.id,
 					grantID: grant.id,
 					applicationID: application.id,
-					chain: getNetworkName(data.reviewer.workspace.chain),
+					chain: getNetworkName(review.reviewer.workspace.chain),
 					isApproved: json['isApproved'],
 					rawData: stringData,
 				}

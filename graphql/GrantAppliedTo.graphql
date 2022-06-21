@@ -33,6 +33,11 @@ query GrantAppliedTo(
           title: value
         }
       }
+      fundingAsked: fields(where: { field_ends_with: "fundingAsk" }) {
+        values {
+          fundingAsk: value
+        }
+      }
       applicantEmail: fields(where: { field_ends_with: "applicantEmail" }) {
         values {
           email: value
@@ -50,6 +55,7 @@ query GrantAppliedTo(
         feedbackFromDev: feedbackDev
         state
       }
+      state
     }
   }
 }

@@ -10,6 +10,16 @@ query ApplicationUpdate(
       id
       chain: supportedNetworks
     }
+    reward {
+      id
+      asset
+      committed
+      token {
+        id
+        label
+        decimal
+      }
+    }
     applications(
       where: {
         updatedAtS_gt: $lowerLimit
@@ -26,9 +36,29 @@ query ApplicationUpdate(
           title: value
         }
       }
-      state
-      version
+      fundingAsked: fields(where: { field_ends_with: "fundingAsk" }) {
+        values {
+          fundingAsk: value
+        }
+      }
+      applicantEmail: fields(where: { field_ends_with: "applicantEmail" }) {
+        values {
+          email: value
+        }
+      }
+      createdBy: applicantId
+      createdAtS
       updatedAtS
+      milestones {
+        id
+        title
+        amount
+        amountPaid
+        feedbackFromDAO: feedbackDao
+        feedbackFromDev: feedbackDev
+        state
+      }
+      state
       feedbackDao
     }
   }
