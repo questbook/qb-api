@@ -16,7 +16,7 @@ const app = express();
 // app.use(express.json());
 app.use(bodyParser.json());
 
-app.post("/zapier/:event", async function (req: Request, res: Response) {
+app.post("/zapier/v1/:event", async function (req: Request, res: Response) {
   const event = OnChainEvent[req.params.event];
   if (event === undefined) res.status(400).send("Invalid event");
   else {
