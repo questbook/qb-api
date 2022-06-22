@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { OnChainEvent } from '../configs/events'
 import {
 	ApplicationUpdateQuery,
@@ -71,9 +70,7 @@ function formatDaoCreatedData(result: DaoCreatedQuery) {
 			daoName: workspace.title,
 			daoDescription: workspace.about,
 			chain: getNetworkName(workspace.chain),
-			createdAt: moment
-				.unix(workspace.createdAtS)
-				.format('YYYY-MM-DD HH:mm:ss'),
+			createdAt: formatTime(workspace.createdAtS),
 			createdBy,
 		}
 
@@ -99,7 +96,7 @@ function formatGrantCreatedData(result: GrantCreatedQuery) {
 			createdBy: grant.creatorId,
 			amount: getTokenDetails(
 				grant.reward.committed,
-				grant.reward.token,
+				grant.reward,
         grant.workspace.chain[0] as SupportedNetwork,
 			),
 			currency: getRewardToken(
@@ -139,7 +136,7 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
           	: null,
 				fundingAsk: getTokenDetails(
 					application.fundingAsked[0].values[0].fundingAsk,
-					grant.reward.token,
+					grant.reward,
           grant.workspace.chain[0] as SupportedNetwork,
 				),
 				currency: getRewardToken(
@@ -154,12 +151,12 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 						title: milestone.title,
 						amount: getTokenDetails(
 							milestone.amount,
-							grant.reward.token,
+							grant.reward,
               grant.workspace.chain[0] as SupportedNetwork,
 						),
 						amountPaid: getTokenDetails(
 							milestone.amountPaid,
-							grant.reward.token,
+							grant.reward,
               grant.workspace.chain[0] as SupportedNetwork,
 						),
 						state: milestone.state,
@@ -167,8 +164,8 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 						feedbackFromDev: milestone.feedbackFromDev,
 					}
 				}),
-        totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward.token, grant.workspace.chain[0] as SupportedNetwork),
-        totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward.token, grant.workspace.chain[0] as SupportedNetwork),
+        totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
+        totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
 			}
 
 			// logger.info({ data, retData }, `${OnChainEvent.GrantAppliedTo}: FORMAT DATA`)
@@ -196,7 +193,7 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 				feedback: application.feedbackDao,
 				fundingAsk: getTokenDetails(
 					application.fundingAsked[0].values[0].fundingAsk,
-					grant.reward.token,
+					grant.reward,
           grant.workspace.chain[0] as SupportedNetwork,
 				),
 				currency: getRewardToken(
@@ -212,12 +209,12 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 						title: milestone.title,
 						amount: getTokenDetails(
 							milestone.amount,
-							grant.reward.token,
+							grant.reward,
               grant.workspace.chain[0] as SupportedNetwork,
 						),
 						amountPaid: getTokenDetails(
 							milestone.amountPaid,
-							grant.reward.token,
+							grant.reward,
               grant.workspace.chain[0] as SupportedNetwork,
 						),
 						state: milestone.state,
@@ -225,8 +222,8 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 						feedbackFromDev: milestone.feedbackFromDev,
 					}
 				}),
-        totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward.token, grant.workspace.chain[0] as SupportedNetwork),
-        totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward.token, grant.workspace.chain[0] as SupportedNetwork),
+        totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
+        totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
 			}
 
 			// logger.info({ data, retData }, `${OnChainEvent.ApplicationUpdate}: FORMAT DATA`)
@@ -254,12 +251,12 @@ function formatFundSentData(result: FundSentQuery) {
 				chain: getNetworkName(grant.workspace.chain),
 				amount: getTokenDetails(
 					fundTransfer.milestone.amount,
-					grant.reward.token,
+					grant.reward,
           grant.workspace.chain[0] as SupportedNetwork,
 				),
 				amountPaid: getTokenDetails(
 					fundTransfer.milestone.amountPaid,
-					grant.reward.token,
+					grant.reward,
           grant.workspace.chain[0] as SupportedNetwork,
 				),
 				currency: getRewardToken(
