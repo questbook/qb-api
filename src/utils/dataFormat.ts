@@ -1,6 +1,4 @@
-import { ethers } from 'ethers'
 import moment from 'moment'
-import { CHAIN_INFO } from '../configs/chainInfo'
 import { OnChainEvent } from '../configs/events'
 import {
 	ApplicationUpdateQuery,
@@ -19,6 +17,8 @@ import {
 	getSupportedChainIdFromSupportedNetwork,
 } from './chainUtils'
 import getFromIPFS from './ipfs'
+import { formatTime } from './timeUtils'
+import { getTokenDetails, getTotalValue } from './tokenUtils'
 
 function formatData(event: OnChainEvent, data: any) {
 	switch (event) {
@@ -71,7 +71,9 @@ function formatDaoCreatedData(result: DaoCreatedQuery) {
 			daoName: workspace.title,
 			daoDescription: workspace.about,
 			chain: getNetworkName(workspace.chain),
-			createdAt: moment.unix(workspace.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
+			createdAt: moment
+				.unix(workspace.createdAtS)
+				.format('YYYY-MM-DD HH:mm:ss'),
 			createdBy,
 		}
 
@@ -93,17 +95,12 @@ function formatGrantCreatedData(result: GrantCreatedQuery) {
 			grantTitle: grant.title,
 			grantDescription: grant.summary,
 			chain: getNetworkName(grant.workspace.chain),
-			createdAt: moment.unix(grant.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
+			createdAt: formatTime(grant.createdAtS),
 			createdBy: grant.creatorId,
-			amount: ethers.utils.formatUnits(
+			amount: getTokenDetails(
 				grant.reward.committed,
-				grant.reward.token && grant.reward.token.label
-					? grant.reward.token.decimal
-					: CHAIN_INFO[
-						getSupportedChainIdFromSupportedNetwork(
-                grant.workspace.chain[0] as SupportedNetwork,
-						)
-					].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
+				grant.reward.token,
+        grant.workspace.chain[0] as SupportedNetwork,
 			),
 			currency: getRewardToken(
 				grant.reward,
@@ -132,7 +129,7 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 				grantTitle: grant.title,
 				daoID: grant.workspace.id,
 				title: application.projectName[0].values[0].title,
-				createdAt: moment.unix(application.createdAtS).format('YYYY-MM-DD HH:mm:ss'),
+				createdAt: formatTime(application.createdAtS),
 				createdBy: application.createdBy,
 				chain: getNetworkName(grant.workspace.chain),
 				state: application.state,
@@ -140,15 +137,10 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
           application.applicantEmail.length > 0
           	? application.applicantEmail[0].values[0].email
           	: null,
-				fundingAsk: ethers.utils.formatUnits(
+				fundingAsk: getTokenDetails(
 					application.fundingAsked[0].values[0].fundingAsk,
-					grant.reward.token && grant.reward.token.label
-						? grant.reward.token.decimal
-						: CHAIN_INFO[
-							getSupportedChainIdFromSupportedNetwork(
-                  grant.workspace.chain[0] as SupportedNetwork,
-							)
-						].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
+					grant.reward.token,
+          grant.workspace.chain[0] as SupportedNetwork,
 				),
 				currency: getRewardToken(
 					grant.reward,
@@ -160,33 +152,23 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 					return {
 						milestoneID: milestone.id,
 						title: milestone.title,
-						amount: ethers.utils.formatUnits(
+						amount: getTokenDetails(
 							milestone.amount,
-							grant.reward.token && grant.reward.token.label
-								? grant.reward.token.decimal
-								: CHAIN_INFO[
-									getSupportedChainIdFromSupportedNetwork(
-                      grant.workspace.chain[0] as SupportedNetwork,
-									)
-								].supportedCurrencies[grant.reward.asset.toLowerCase()]
-									.decimal,
+							grant.reward.token,
+              grant.workspace.chain[0] as SupportedNetwork,
 						),
-						amountPaid: ethers.utils.formatUnits(
+						amountPaid: getTokenDetails(
 							milestone.amountPaid,
-							grant.reward.token && grant.reward.token.label
-								? grant.reward.token.decimal
-								: CHAIN_INFO[
-									getSupportedChainIdFromSupportedNetwork(
-                      grant.workspace.chain[0] as SupportedNetwork,
-									)
-								].supportedCurrencies[grant.reward.asset.toLowerCase()]
-									.decimal,
+							grant.reward.token,
+              grant.workspace.chain[0] as SupportedNetwork,
 						),
 						state: milestone.state,
 						feedbackFromDao: milestone.feedbackFromDAO,
 						feedbackFromDev: milestone.feedbackFromDev,
 					}
 				}),
+        totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward.token, grant.workspace.chain[0] as SupportedNetwork),
+        totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward.token, grant.workspace.chain[0] as SupportedNetwork),
 			}
 
 			// logger.info({ data, retData }, `${OnChainEvent.GrantAppliedTo}: FORMAT DATA`)
@@ -212,15 +194,10 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 				chain: getNetworkName(grant.workspace.chain),
 				state: application.state,
 				feedback: application.feedbackDao,
-				fundingAsk: ethers.utils.formatUnits(
+				fundingAsk: getTokenDetails(
 					application.fundingAsked[0].values[0].fundingAsk,
-					grant.reward.token && grant.reward.token.label
-						? grant.reward.token.decimal
-						: CHAIN_INFO[
-							getSupportedChainIdFromSupportedNetwork(
-                  grant.workspace.chain[0] as SupportedNetwork,
-							)
-						].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
+					grant.reward.token,
+          grant.workspace.chain[0] as SupportedNetwork,
 				),
 				currency: getRewardToken(
 					grant.reward,
@@ -228,7 +205,28 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
             grant.workspace.chain[0] as SupportedNetwork,
 					),
 				),
-				updatedAt: moment.unix(application.updatedAtS).format('YYYY-MM-DD HH:mm:ss'),
+				updatedAt: formatTime(application.updatedAtS),
+        milestones: application.milestones.map((milestone) => {
+					return {
+						milestoneID: milestone.id,
+						title: milestone.title,
+						amount: getTokenDetails(
+							milestone.amount,
+							grant.reward.token,
+              grant.workspace.chain[0] as SupportedNetwork,
+						),
+						amountPaid: getTokenDetails(
+							milestone.amountPaid,
+							grant.reward.token,
+              grant.workspace.chain[0] as SupportedNetwork,
+						),
+						state: milestone.state,
+						feedbackFromDao: milestone.feedbackFromDAO,
+						feedbackFromDev: milestone.feedbackFromDev,
+					}
+				}),
+        totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward.token, grant.workspace.chain[0] as SupportedNetwork),
+        totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward.token, grant.workspace.chain[0] as SupportedNetwork),
 			}
 
 			// logger.info({ data, retData }, `${OnChainEvent.ApplicationUpdate}: FORMAT DATA`)
@@ -251,27 +249,18 @@ function formatFundSentData(result: FundSentQuery) {
 				milestoneID: fundTransfer.milestone.id,
 				milestoneTitle: fundTransfer.milestone.title,
 				applicationID: fundTransfer.application.id,
-				applicationTitle: fundTransfer.application.projectName[0].values[0].title,
+				applicationTitle:
+          fundTransfer.application.projectName[0].values[0].title,
 				chain: getNetworkName(grant.workspace.chain),
-				amount: ethers.utils.formatUnits(
+				amount: getTokenDetails(
 					fundTransfer.milestone.amount,
-					grant.reward.token && grant.reward.token.label
-						? grant.reward.token.decimal
-						: CHAIN_INFO[
-							getSupportedChainIdFromSupportedNetwork(
-                  grant.workspace.chain[0] as SupportedNetwork,
-							)
-						].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
+					grant.reward.token,
+          grant.workspace.chain[0] as SupportedNetwork,
 				),
-				amountPaid: ethers.utils.formatUnits(
+				amountPaid: getTokenDetails(
 					fundTransfer.milestone.amountPaid,
-					grant.reward.token && grant.reward.token.label
-						? grant.reward.token.decimal
-						: CHAIN_INFO[
-							getSupportedChainIdFromSupportedNetwork(
-                  grant.workspace.chain[0] as SupportedNetwork,
-							)
-						].supportedCurrencies[grant.reward.asset.toLowerCase()].decimal,
+					grant.reward.token,
+          grant.workspace.chain[0] as SupportedNetwork,
 				),
 				currency: getRewardToken(
 					grant.reward,
@@ -306,7 +295,7 @@ function formatReviewerInvitedToDaoData(result: ReviewerInvitedToDaoQuery) {
 			chain: getNetworkName(workspaceMember.workspace.chain),
 			email: workspaceMember.email,
 			workspaceId: workspaceMember.workspace.id,
-			updatedAt: moment.unix(workspaceMember.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+			updatedAt: formatTime(workspaceMember.updatedAt),
 		}
 
 		// logger.info({ data, retData }, `${OnChainEvent.ReviewerInvitedToDao}: FORMAT DATA`)

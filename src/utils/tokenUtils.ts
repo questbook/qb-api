@@ -1,0 +1,25 @@
+import { BigNumber, ethers } from 'ethers'
+import { CHAIN_INFO } from '../configs/chainInfo'
+import { SupportedNetwork } from '../generated/graphql'
+import { getSupportedChainIdFromSupportedNetwork } from './chainUtils'
+
+export const getTokenDetails = (value: string, reward: any, chain: SupportedNetwork) => {
+	return ethers.utils.formatUnits(
+		value,
+		reward.token && reward.token.label
+			? reward.token.decimal
+			: CHAIN_INFO[
+				getSupportedChainIdFromSupportedNetwork(
+					chain,
+				)
+			].supportedCurrencies[reward.asset.toLowerCase()].decimal,
+	)
+}
+
+export const getTotalValue = (values: string[]) => {
+	let val = BigNumber.from(0)
+	values.forEach((value) => {
+		val = val.add(value)
+	})
+	return val.toString()
+}
