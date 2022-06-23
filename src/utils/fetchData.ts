@@ -1,13 +1,13 @@
 import { OnChainEvent } from '../configs/events'
 import { ApplicationUpdateDocument, DaoCreatedDocument, FundSentDocument, GrantAppliedToDocument, GrantCreatedDocument, ReviewerAddedToGrantApplicationDocument, ReviewerInvitedToDaoDocument, ReviewerSubmittedReviewDocument } from '../generated/graphql'
 import formatData from './dataFormat'
-import { executeQuery } from './query'
+import executeQuery from './query'
 
 const Pino = require('pino')
 
 const logger = Pino()
 
-export async function fetchData(type: OnChainEvent, chainId: number, variables?: {[key: string]: any}) {
+export async function fetchData(type: OnChainEvent, chainId: string, variables?: {[key: string]: any}) {
 	let documentNode = null
 	switch (type) {
 	case OnChainEvent.DaoCreated:

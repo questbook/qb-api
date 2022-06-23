@@ -1,9 +1,8 @@
 import { BigNumber, ethers } from 'ethers'
-import { CHAIN_INFO } from '../configs/chainInfo'
-import { SupportedNetwork } from '../generated/graphql'
+import { CHAIN_INFO } from "../configs/chains"
 import { getSupportedChainIdFromSupportedNetwork } from './chainUtils'
 
-export const getTokenDetails = (value: string, reward: any, chain: SupportedNetwork) => {
+export const getTokenDetails = (value: string, reward: any, chain: string) => {
 	return ethers.utils.formatUnits(
 		value,
 		reward.token && reward.token.label
