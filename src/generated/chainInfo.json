@@ -83,20 +83,20 @@
 			"transactionHash": "https://kovan.etherscan.io/tx/{{tx}}"
 		},
 		"supportedCurrencies": {
-			"0x04DF6e4121c27713ED22341E7c7Df330F56f289B": {
+			"0x04df6e4121c27713ed22341e7c7df330f56f289b": {
 				"label": "DAI",
 				"decimal": 18,
-				"address": "0x04DF6e4121c27713ED22341E7c7Df330F56f289B"
+				"address": "0x04df6e4121c27713ed22341e7c7df330f56f289b"
 			},
-			"0xd0A1E359811322d97991E03f863a0C30C2cF029C": {
+			"0xd0a1e359811322d97991e03f863a0c30c2cf029c": {
 				"label": "WETH",
 				"decimal": 18,
-				"address": "0xd0A1E359811322d97991E03f863a0C30C2cF029C"
+				"address": "0xd0a1e359811322d97991e03f863a0c30c2cf029c"
 			},
-			"0xe22da380ee6B445bb8273C81944ADEB6E8450422": {
+			"0xe22da380ee6b445bb8273c81944adeb6e8450422": {
 				"label": "USDC",
 				"decimal": 6,
-				"address": "0xe22da380ee6B445bb8273C81944ADEB6E8450422"
+				"address": "0xe22da380ee6b445bb8273c81944adeb6e8450422"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-kovan",
