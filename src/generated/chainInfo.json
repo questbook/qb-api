@@ -193,10 +193,10 @@
 				"decimal": 18,
 				"address": "0x3962f4a0a0051dcce0be73a7e09cef5756736712"
 			},
-			"0x62c4b802f2153a281dc87994427F606f561Cc620": {
+			"0x62c4b802f2153a281dc87994427f606f561cc620": {
 				"label": "SPR",
 				"decimal": 18,
-				"address": "0x62c4b802f2153a281dc87994427F606f561Cc620"
+				"address": "0x62c4b802f2153a281dc87994427f606f561cc620"
 			},
 			"0x980111ae1b84e50222c8843e3a7a038f36fecd2b": {
 				"label": "STACK",
@@ -299,10 +299,10 @@
 			"transactionHash": "https://alfajores-blockscout.celo-testnet.org/tx/{{tx}}"
 		},
 		"supportedCurrencies": {
-			"0x7d91E51C8F218f7140188A155f5C75388630B6a8": {
+			"0x7d91e51c8f218f7140188a155f5c75388630b6a8": {
 				"label": "DAI",
 				"decimal": 18,
-				"address": "0x7d91E51C8F218f7140188A155f5C75388630B6a8"
+				"address": "0x7d91e51c8f218f7140188a155f5c75388630b6a8"
 			},
 			"0xf194afdf50b03e69bd7d057c1aa9e10c9954e4c9": {
 				"label": "CELO",
@@ -384,10 +384,10 @@
 			"transactionHash": "https://explorer.harmony.one/tx/{{tx}}/"
 		},
 		"supportedCurrencies": {
-			"0x985458E523dB3d53125813eD68c274899e9DfAb4": {
+			"0x985458e523db3d53125813ed68c274899e9dfab4": {
 				"label": "USDC",
 				"decimal": 6,
-				"address": "0x985458E523dB3d53125813eD68c274899e9DfAb4"
+				"address": "0x985458e523db3d53125813ed68c274899e9dfab4"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-harmony-mainnet",
