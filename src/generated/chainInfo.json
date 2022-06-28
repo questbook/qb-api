@@ -290,6 +290,31 @@
 			"https://public-node-api.klaytnapi.com/v1/cypress"
 		]
 	},
+	"42220": {
+		"id": 42220,
+		"name": "Celo Mainnet",
+		"isTestNetwork": false,
+		"explorer": {
+			"address": "https://celoscan.xyz/address/{{address}}",
+			"transactionHash": "https://celoscan.xyz/tx/{{tx}}"
+		},
+		"supportedCurrencies": {
+			"0x471ece3750da237f93b8e339c536989b8978a438": {
+				"label": "CELO",
+				"decimal": 18,
+				"address": "0x471ece3750da237f93b8e339c536989b8978a438"
+			},
+			"0x765de816845861e75a25fca122bb6898b8b1282a": {
+				"label": "cUSD",
+				"decimal": 18,
+				"address": "0x765de816845861e75a25fca122bb6898b8b1282a"
+			}
+		},
+		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-celo-mainnet",
+		"rpcUrls": [
+			"https://forno.celo.org"
+		]
+	},
 	"44787": {
 		"id": 44787,
 		"name": "Celo Testnet",
