@@ -56,8 +56,8 @@ export async function fetchData(type: OnChainEvent, chainId: string, variables?:
 	let data = []
 	let count = 0
 	// for(const chainId of ALL_SUPPORTED_CHAIN_IDS) {
-	// const fromTimestamp = Math.floor((time.getTime() - 30 * 24 * 60 * 60 * 1000) / 1000)
-	const fromTimestamp = 0
+	const fromTimestamp = Math.floor((time.getTime() - 30 * 24 * 60 * 60 * 1000) / 1000)
+	// const fromTimestamp = 0
 
 	logger.info({ fromTimestamp, toTimestamp, chainId }, `${type.toString()}: Fetching data from graphQL`)
 	const result = await executeQuery(
