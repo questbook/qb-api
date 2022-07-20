@@ -250,6 +250,31 @@
 			"https://api.baobab.klaytn.net:8651"
 		]
 	},
+	"1287": {
+		"id": 1287,
+		"name": "Moonbase Alpha",
+		"isTestNetwork": true,
+		"explorer": {
+			"address": "https://moonbase.moonscan.io/address/{{address}}",
+			"transactionHash": "https://moonbase.moonscan.io/tx/{{tx}}"
+		},
+		"supportedCurrencies": {
+			"0x3a9c9484e0e82596fb4c2e7fec97106c4c2310fa": {
+				"label": "ELP",
+				"decimal": 18,
+				"address": "0x3a9c9484e0e82596fb4c2e7fec97106c4c2310fa"
+			},
+			"0xed13b028697febd70f34cf9a9e280a8f1e98fd29": {
+				"label": "NEPT",
+				"decimal": 18,
+				"address": "0xed13b028697febd70f34cf9a9e280a8f1e98fd29"
+			}
+		},
+		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-moonbase-alpha",
+		"rpcUrls": [
+			"https://rpc.api.moonbase.moonbeam.network"
+		]
+	},
 	"2153": {
 		"id": 2153,
 		"name": "Findora Testnet",
