@@ -290,6 +290,26 @@
 			"https://public-node-api.klaytnapi.com/v1/cypress"
 		]
 	},
+	"9000": {
+		"id": 9000,
+		"name": "Evmos Testnet",
+		"isTestNetwork": true,
+		"explorer": {
+			"address": "https://evm.evmos.dev/address/{{address}}",
+			"transactionHash": "https://evm.evmos.dev/tx/{{tx}}"
+		},
+		"supportedCurrencies": {
+			"0xae95d4890bf4471501e0066b6c6244e1caaee791": {
+				"label": "USDC",
+				"decimal": 6,
+				"address": "0xae95d4890bf4471501e0066b6c6244e1caaee791"
+			}
+		},
+		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-evmos-testnet",
+		"rpcUrls": [
+			"https://eth.bd.evmos.dev:8545"
+		]
+	},
 	"42220": {
 		"id": 42220,
 		"name": "Celo Mainnet",
