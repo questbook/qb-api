@@ -74,6 +74,46 @@
 			"https://optimism-mainnet.infura.io/v3/"
 		]
 	},
+	"40": {
+		"id": 40,
+		"name": "Telos Mainnet",
+		"isTestNetwork": false,
+		"explorer": {
+			"address": "https://www.teloscan.io/address/{{address}}/",
+			"transactionHash": "https://www.teloscan.io/tx/{{tx}}/"
+		},
+		"supportedCurrencies": {
+			"0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b": {
+				"label": "USDC",
+				"decimal": 6,
+				"address": "0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b"
+			}
+		},
+		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-telos-mainnet",
+		"rpcUrls": [
+			"https://mainnet.telos.net/evm"
+		]
+	},
+	"41": {
+		"id": 41,
+		"name": "Telos Testnet",
+		"isTestNetwork": true,
+		"explorer": {
+			"address": "https://testnet.teloscan.io/address/{{address}}/",
+			"transactionHash": "https://testnet.teloscan.io/tx/{{tx}}/"
+		},
+		"supportedCurrencies": {
+			"0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b": {
+				"label": "USDC",
+				"decimal": 6,
+				"address": "0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b"
+			}
+		},
+		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-telos-testnet",
+		"rpcUrls": [
+			"https://testnet.telos.net/evm"
+		]
+	},
 	"42": {
 		"id": 42,
 		"name": "Kovan",
