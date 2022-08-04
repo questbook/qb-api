@@ -262,6 +262,11 @@
 				"label": "ZKP",
 				"decimal": 18,
 				"address": "0x9a06db14d639796b25a6cec6a1bf614fd98815ec"
+			},
+			"0xf7e78d9c4c74df889a83c8c8d6d05bf70ff75876": {
+				"label": "UDT",
+				"decimal": 18,
+				"address": "0xf7e78d9c4c74df889a83c8c8d6d05bf70ff75876"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-polygon-mainnet",
