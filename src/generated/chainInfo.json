@@ -164,6 +164,26 @@
 			"https://optimism-kovan.infura.io/v3/"
 		]
 	},
+	"100": {
+		"id": 100,
+		"name": "Gnosis Mainnet",
+		"isTestNetwork": false,
+		"explorer": {
+			"address": "https://blockscout.com/xdai/mainnet/address/{{address}}/",
+			"transactionHash": "https://blockscout.com/xdai/mainnet/tx/{{tx}}/"
+		},
+		"supportedCurrencies": {
+			"0x9c58bacc331c9aa871afd802db6379a98e80cedb": {
+				"label": "GNO",
+				"decimal": 18,
+				"address": "0x9c58bacc331c9aa871afd802db6379a98e80cedb"
+			}
+		},
+		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-gnosis-mainnet",
+		"rpcUrls": [
+			"https://rpc.gnosischain.com/"
+		]
+	},
 	"137": {
 		"id": 137,
 		"name": "Polygon Mainnet",
