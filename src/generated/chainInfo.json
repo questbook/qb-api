@@ -29,6 +29,36 @@
 			"https://rinkeby.infura.io/v3/"
 		]
 	},
+	"5": {
+		"id": 5,
+		"name": "Goerli",
+		"isTestNetwork": true,
+		"explorer": {
+			"address": "https://goerli.etherscan.io/address/{{address}}",
+			"transactionHash": "https://goerli.etherscan.io/tx/{{tx}}"
+		},
+		"supportedCurrencies": {
+			"0x73967c6a0904aA032C103b4104747E88c566B1A2": {
+				"label": "DAI",
+				"decimal": 18,
+				"address": "0x73967c6a0904aA032C103b4104747E88c566B1A2"
+			},
+			"0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6": {
+				"label": "WETH",
+				"decimal": 18,
+				"address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6"
+			},
+			"0x2f3A40A3db8a7e3D09B0adfEfbCe4f6F81927557": {
+				"label": "USDC",
+				"decimal": 6,
+				"address": "0x2f3A40A3db8a7e3D09B0adfEfbCe4f6F81927557"
+			}
+		},
+		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-goerli-testnet",
+		"rpcUrls": [
+			"https://goerli.infura.io/v3/"
+		]
+	},
 	"10": {
 		"id": 10,
 		"name": "Optimism Mainnet",
