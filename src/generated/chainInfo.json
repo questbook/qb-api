@@ -38,20 +38,20 @@
 			"transactionHash": "https://goerli.etherscan.io/tx/{{tx}}"
 		},
 		"supportedCurrencies": {
-			"0x73967c6a0904aA032C103b4104747E88c566B1A2": {
+			"0x73967c6a0904aa032c103b4104747e88c566b1a2": {
 				"label": "DAI",
 				"decimal": 18,
-				"address": "0x73967c6a0904aA032C103b4104747E88c566B1A2"
+				"address": "0x73967c6a0904aa032c103b4104747e88c566b1a2"
 			},
-			"0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6": {
+			"0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6": {
 				"label": "WETH",
 				"decimal": 18,
-				"address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6"
+				"address": "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6"
 			},
-			"0x2f3A40A3db8a7e3D09B0adfEfbCe4f6F81927557": {
+			"0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557": {
 				"label": "USDC",
 				"decimal": 6,
-				"address": "0x2f3A40A3db8a7e3D09B0adfEfbCe4f6F81927557"
+				"address": "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-goerli-testnet",
