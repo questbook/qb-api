@@ -325,6 +325,26 @@
 			"https://polygon-mainnet.g.alchemy.com/v2/"
 		]
 	},
+	"588": {
+		"id": 588,
+		"name": "Metis Testnet",
+		"isTestNetwork": true,
+		"explorer": {
+			"address": "https://stardust-explorer.metis.io/address/{{address}}/",
+			"transactionHash": "https://stardust-explorer.metis.io/tx/{{tx}}/"
+		},
+		"supportedCurrencies": {
+			"0x6e5791ad106fcadfba3115cdc21d1ad3471d2e13": {
+				"label": "METIS",
+				"decimal": 18,
+				"address": "0x6e5791ad106fcadfba3115cdc21d1ad3471d2e13"
+			}
+		},
+		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-metis-testnet",
+		"rpcUrls": [
+			"https://stardust.metis.io/?owner=588"
+		]
+	},
 	"1001": {
 		"id": 1001,
 		"name": "Klaytn Testnet",
@@ -343,6 +363,26 @@
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-klaytn-testnet",
 		"rpcUrls": [
 			"https://api.baobab.klaytn.net:8651"
+		]
+	},
+	"1088": {
+		"id": 1088,
+		"name": "Metis Mainnet",
+		"isTestNetwork": false,
+		"explorer": {
+			"address": "https://andromeda-explorer.metis.io/address/{{address}}/",
+			"transactionHash": "https://andromeda-explorer.metis.io/tx/{{tx}}/"
+		},
+		"supportedCurrencies": {
+			"0x9e32b13ce7f2e80a01932b42553652e053d6ed8e": {
+				"label": "METIS",
+				"decimal": 18,
+				"address": "0x9e32b13ce7f2e80a01932b42553652e053d6ed8e"
+			}
+		},
+		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-metis-mainnet",
+		"rpcUrls": [
+			"https://andromeda.metis.io/?owner=1088"
 		]
 	},
 	"1287": {
