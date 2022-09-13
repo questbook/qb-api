@@ -52,6 +52,11 @@
 				"label": "USDC",
 				"decimal": 6,
 				"address": "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557"
+			},
+			"0x0000000000000000000000000000000000000001": {
+				"label": "SOL",
+				"decimal": 9,
+				"address": "0x0000000000000000000000000000000000000001"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-goerli-testnet",
@@ -97,6 +102,11 @@
 				"label": "sUSD",
 				"decimal": 18,
 				"address": "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9"
+			},
+			"0x0000000000000000000000000000000000000001": {
+				"label": "SOL",
+				"decimal": 9,
+				"address": "0x0000000000000000000000000000000000000001"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-optimism-mainnet",
@@ -317,6 +327,11 @@
 				"label": "UDT",
 				"decimal": 18,
 				"address": "0xf7e78d9c4c74df889a83c8c8d6d05bf70ff75876"
+			},
+			"0x0000000000000000000000000000000000000001": {
+				"label": "SOL",
+				"decimal": 9,
+				"address": "0x0000000000000000000000000000000000000001"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-polygon-mainnet",
@@ -488,6 +503,11 @@
 				"label": "cUSD",
 				"decimal": 18,
 				"address": "0x765de816845861e75a25fca122bb6898b8b1282a"
+			},
+			"0x0000000000000000000000000000000000000001": {
+				"label": "SOL",
+				"decimal": 9,
+				"address": "0x0000000000000000000000000000000000000001"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-celo-mainnet",
