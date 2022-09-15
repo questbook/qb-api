@@ -57,6 +57,11 @@
 				"label": "USD",
 				"decimal": 9,
 				"address": "0x0000000000000000000000000000000000000001"
+			},
+			"0x0000000000000000000000000000000000000002": {
+				"label": "SOL",
+				"decimal": 9,
+				"address": "0x0000000000000000000000000000000000000002"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-goerli-testnet",
@@ -107,6 +112,11 @@
 				"label": "USD",
 				"decimal": 9,
 				"address": "0x0000000000000000000000000000000000000001"
+			},
+			"0x0000000000000000000000000000000000000002": {
+				"label": "SOL",
+				"decimal": 9,
+				"address": "0x0000000000000000000000000000000000000002"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-optimism-mainnet",
@@ -332,6 +342,11 @@
 				"label": "USD",
 				"decimal": 9,
 				"address": "0x0000000000000000000000000000000000000001"
+			},
+			"0x0000000000000000000000000000000000000002": {
+				"label": "SOL",
+				"decimal": 9,
+				"address": "0x0000000000000000000000000000000000000002"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-polygon-mainnet",
@@ -508,6 +523,11 @@
 				"label": "USD",
 				"decimal": 9,
 				"address": "0x0000000000000000000000000000000000000001"
+			},
+			"0x0000000000000000000000000000000000000002": {
+				"label": "SOL",
+				"decimal": 9,
+				"address": "0x0000000000000000000000000000000000000002"
 			}
 		},
 		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-celo-mainnet",
