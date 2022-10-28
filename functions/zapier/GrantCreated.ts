@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { CHAIN_INFO } from '../src/configs/chains'
-import { work } from '../src/utils/work'
+import { CHAIN_INFO } from '../../src/configs/chains'
+import { work } from '../../src/utils/work'
 
-async function reviewerSubmittedReview(req: Request, res: Response) {
+async function grantCreated(req: Request, res: Response) {
 	const { workspaceId, chain } = req.body
 	if(chain === undefined) {
 		res.status(400).json({ 'Error': 'Missing chain' })
@@ -16,7 +16,7 @@ async function reviewerSubmittedReview(req: Request, res: Response) {
 		res.status(404).json({ 'Error': 'Invalid workspaceId' })
 	} else {
 		try {
-			const data = await work('ReviewerSubmittedReview', chain, { workspaceId })
+			const data = await work('GrantCreated', chain, { workspaceId })
 			res.status(200).json(data)
 		} catch(e) {
 			res.status(500).json({ 'Error': e })
@@ -24,4 +24,4 @@ async function reviewerSubmittedReview(req: Request, res: Response) {
 	}
 }
 
-export default reviewerSubmittedReview
+export default grantCreated

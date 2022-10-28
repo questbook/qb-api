@@ -1,13 +1,13 @@
 import bodyParser from 'body-parser'
 import express, { Request, Response } from 'express'
 import serverless from 'serverless-http'
-import applicationUpdate from './functions/ApplicationUpdate'
-import daoCreated from './functions/DaoCreated'
-import fundSent from './functions/FundSent'
-import grantAppliedTo from './functions/GrantAppliedTo'
-import grantCreated from './functions/GrantCreated'
-import reviewerInvitedToDao from './functions/ReviewerInvitedToDAO'
-import reviewerSubmittedReview from './functions/ReviewerSubmittedReview'
+import applicationUpdate from './functions/zapier/ApplicationUpdate'
+import daoCreated from './functions/zapier/DaoCreated'
+import fundSent from './functions/zapier/FundSent'
+import grantAppliedTo from './functions/zapier/GrantAppliedTo'
+import grantCreated from './functions/zapier/GrantCreated'
+import reviewerInvitedToDao from './functions/zapier/ReviewerInvitedToDAO'
+import reviewerSubmittedReview from './functions/zapier/ReviewerSubmittedReview'
 
 const app = express()
 

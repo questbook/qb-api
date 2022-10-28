@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { CHAIN_INFO } from '../src/configs/chains'
-import { work } from '../src/utils/work'
+import { CHAIN_INFO } from '../../src/configs/chains'
+import { work } from '../../src/utils/work'
 
 async function fundSent(req: Request, res: Response) {
 	const { workspaceId, chain } = req.body
