@@ -19,7 +19,11 @@ async function check(req: Request, res: Response) {
 		console.log(id, from, to)
 		const ret = await doesMappingExist(id, from, to)
 		console.log(ret)
-		res.status(200).json({ 'Success': 'Success' })
+		if(ret.error) {
+			res.status(500).json(ret)
+		} else {
+			res.status(200).json({ 'Success': 'Success' })
+		}
 	}
 }
 

@@ -85,8 +85,7 @@ async function isValid(
 	}
 
 	try {
-		const localMessage = `I allow mails to be forwarded to ${email}`
-		const from = ethers.utils.verifyMessage(localMessage, message)
+		const from = ethers.utils.verifyMessage(email, message)
 
 		if(from !== walletAddress) {
 			return { error: 'Message not signed by the correct wallet', value: false }
@@ -99,7 +98,7 @@ async function isValid(
 }
 
 async function create(req: Request, res: Response) {
-	const { id, chainId, wallet, transactionHash, message, from, to } = req.body
+	const { id, chainId, wallet, transactionHash, from, to } = req.body
 	console.log(req.body)
 	if(id === undefined) {
 		res.status(400).json({ 'Error': 'Missing ID' })
@@ -117,10 +116,10 @@ async function create(req: Request, res: Response) {
 		res.status(406).json({ 'Error': 'Missing \'transactionHash\'' })
 	} else if(typeof transactionHash !== 'string') {
 		res.status(407).json({ 'Error': 'Invalid \'transactionHash\'' })
-	} else if(message === undefined) {
-		res.status(408).json({ 'Error': 'Missing \'message\'' })
-	} else if(typeof message !== 'string') {
-		res.status(409).json({ 'Error': 'Invalid \'message\'' })
+	} else if(wallet === undefined) {
+		res.status(408).json({ 'Error': 'Missing \'wallet\'' })
+	} else if(typeof wallet !== 'string') {
+		res.status(409).json({ 'Error': 'Invalid \'wallet\'' })
 	} else if(from === undefined) {
 		res.status(410).json({ 'Error': 'Missing \'from\'' })
 	} else if(typeof from !== 'string') {
@@ -135,7 +134,7 @@ async function create(req: Request, res: Response) {
 		if(exists) {
 			res.status(200).json({ 'Success': 'Mapping exists' })
 		} else {
-		    let ret = await isValid(chainId, from, to, transactionHash, message)
+		    let ret = await isValid(chainId, from, to, transactionHash, wallet)
 			// res.status(200).json(ret)
 			if(ret) {
 				ret = await createMapping(id, from, to)

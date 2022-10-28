@@ -6,7 +6,7 @@ const AWS = require('aws-sdk')
 const TABLE = process.env.TABLE_NAME
 const dynamo = new AWS.DynamoDB.DocumentClient()
 
-async function doesMappingExist(id: string, from: string, to: string) {
+async function doesMappingExist(id: string, from: string, to: string): Promise<Mapping> {
 	try {
 		const result = await dynamo
 			.get({
@@ -16,14 +16,14 @@ async function doesMappingExist(id: string, from: string, to: string) {
 				},
 			})
 			.promise()
-		if(result['from'] === from && result['to'] === to) {
-			return true
+		if(result.Item && result.Item['from'] === from && result.Item['to'] === to) {
+			return { value: true }
 		} else {
-			return false
+			return { error: 'ID not present', value: false }
 		}
 	} catch(err) {
 		console.error(err)
-		return false
+		return { value: false }
 	}
 }
 
