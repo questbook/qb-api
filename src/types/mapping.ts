@@ -1,4 +1,5 @@
 export type Mapping = {
+    message?: string
     error?: string
     value: boolean
 }

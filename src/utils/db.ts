@@ -16,14 +16,16 @@ async function doesMappingExist(id: string, from: string, to: string): Promise<M
 				},
 			})
 			.promise()
-		if(result.Item && result.Item['from'] === from && result.Item['to'] === to) {
-			return { value: true }
-		} else {
+		if(!result.Item) {
 			return { error: 'ID not present', value: false }
+		} else if(result.Item['from'] === from && result.Item['to'] === to) {
+			return { message: 'Mapping exists', value: true }
+		} else {
+			return { error: 'Mapping does not exist', value: false }
 		}
 	} catch(err) {
 		console.error(err)
-		return { value: false }
+		return { error: err, value: false }
 	}
 }
 
@@ -40,7 +42,7 @@ async function createMapping(id: string, from: string, to: string): Promise<Mapp
 			})
 			.promise()
 		console.log(result)
-		return { value: true }
+		return { message: 'Mapping created', value: true }
 	} catch(err) {
 		console.error(err)
 		return { error: err, value: true }

@@ -4,25 +4,23 @@ import { doesMappingExist } from '../../src/utils/db'
 async function check(req: Request, res: Response) {
 	const { id, from, to } = req.body
 	if(id === undefined) {
-		res.status(400).json({ 'Error': 'Missing ID' })
+		res.status(400).json({ error: 'Missing ID', value: false })
 	} else if(typeof id !== 'string') {
-		res.status(401).json({ 'Error': 'Invalid ID' })
+		res.status(401).json({ error: 'Invalid ID', value: false })
 	} else if(from === undefined) {
-		res.status(403).json({ 'Error': 'Missing \'from\'' })
+		res.status(403).json({ error: 'Missing \'from\'', value: false })
 	} else if(typeof from !== 'string') {
-		res.status(404).json({ 'Error': 'Invalid \'from\'' })
+		res.status(404).json({ error: 'Invalid \'from\'', value: false })
 	} else if(to === undefined) {
-		res.status(405).json({ 'Error': 'Missing \'to\'' })
+		res.status(405).json({ error: 'Missing \'to\', value: false' })
 	} else if(typeof to !== 'string') {
-		res.status(406).json({ 'Error': 'Invalid \'to\'' })
+		res.status(406).json({ error: 'Invalid \'to\'', value: false })
 	} else {
-		console.log(id, from, to)
 		const ret = await doesMappingExist(id, from, to)
-		console.log(ret)
 		if(ret.error) {
 			res.status(500).json(ret)
 		} else {
-			res.status(200).json({ 'Success': 'Success' })
+			res.status(200).json(ret)
 		}
 	}
 }

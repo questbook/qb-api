@@ -101,50 +101,50 @@ async function create(req: Request, res: Response) {
 	const { id, chainId, wallet, transactionHash, from, to } = req.body
 	console.log(req.body)
 	if(id === undefined) {
-		res.status(400).json({ 'Error': 'Missing ID' })
+		res.status(400).json({ error: 'Missing ID', value: false })
 	} else if(typeof id !== 'string') {
-		res.status(401).json({ 'Error': 'Invalid ID' })
+		res.status(401).json({ error: 'Invalid ID', value: false })
 	} else if(chainId === undefined) {
-		res.status(402).json({ 'Error': 'Missing chain ID' })
+		res.status(402).json({ error: 'Missing chain ID', value: false })
 	} else if(typeof chainId !== 'number') {
-		res.status(403).json({ 'Error': 'Invalid chain ID' })
+		res.status(403).json({ error: 'Invalid chain ID', value: false })
 	} else if(wallet === undefined) {
-		res.status(404).json({ 'Error': 'Missing \'wallet\'' })
+		res.status(404).json({ error: 'Missing \'wallet\'', value: false })
 	} else if(typeof wallet !== 'string') {
-		res.status(405).json({ 'Error': 'Invalid \'wallet\'' })
+		res.status(405).json({ error: 'Invalid \'wallet\'', value: false })
 	} else if(transactionHash === undefined) {
-		res.status(406).json({ 'Error': 'Missing \'transactionHash\'' })
+		res.status(406).json({ error: 'Missing \'transactionHash\'', value: false })
 	} else if(typeof transactionHash !== 'string') {
-		res.status(407).json({ 'Error': 'Invalid \'transactionHash\'' })
+		res.status(407).json({ error: 'Invalid \'transactionHash\'', value: false })
 	} else if(wallet === undefined) {
-		res.status(408).json({ 'Error': 'Missing \'wallet\'' })
+		res.status(408).json({ error: 'Missing \'wallet\'', value: false })
 	} else if(typeof wallet !== 'string') {
-		res.status(409).json({ 'Error': 'Invalid \'wallet\'' })
+		res.status(409).json({ error: 'Invalid \'wallet\'', value: false })
 	} else if(from === undefined) {
-		res.status(410).json({ 'Error': 'Missing \'from\'' })
+		res.status(410).json({ error: 'Missing \'from\'', value: false })
 	} else if(typeof from !== 'string') {
-		res.status(411).json({ 'Error': 'Invalid \'from\'' })
+		res.status(411).json({ error: 'Invalid \'from\'', value: false })
 	} else if(to === undefined) {
-		res.status(412).json({ 'Error': 'Missing \'to\'' })
+		res.status(412).json({ error: 'Missing \'to\'', value: false })
 	} else if(typeof to !== 'string') {
-		res.status(413).json({ 'Error': 'Invalid \'to\'' })
+		res.status(413).json({ error: 'Invalid \'to\'', value: false })
 	} else {
 		const exists = await doesMappingExist(id, from, to)
 		console.log(exists)
-		if(exists) {
-			res.status(200).json({ 'Success': 'Mapping exists' })
+		if(exists.value) {
+			res.status(200).json(exists)
 		} else {
 		    let ret = await isValid(chainId, from, to, transactionHash, wallet)
 			// res.status(200).json(ret)
-			if(ret) {
+			if(ret.value) {
 				ret = await createMapping(id, from, to)
 				if(ret?.error) {
-					res.status(500).json({ 'Error': ret?.error })
+					res.status(500).json(ret)
 				} else {
-					res.status(200).json({ 'Success': 'Success' })
+					res.status(200).json(ret)
 				}
 			} else {
-				res.status(500).json({ 'Error': ret?.error })
+				res.status(500).json(ret)
 			}
 		}
 	}
