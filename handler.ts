@@ -2,6 +2,7 @@ import bodyParser from 'body-parser'
 import express, { Request, Response } from 'express'
 import serverless from 'serverless-http'
 import check from './functions/mappings/check'
+import create from './functions/mappings/create'
 import applicationUpdate from './functions/zapier/ApplicationUpdate'
 import daoCreated from './functions/zapier/DaoCreated'
 import fundSent from './functions/zapier/FundSent'
@@ -59,7 +60,8 @@ app.post('/mapping/:event', async(req: Request, res: Response) => {
 	const { event } = req.params
 
 	if(event === 'create') {
-
+		console.log('Here!')
+		create(req, res)
 	} else if(event === 'check') {
 		check(req, res)
 	} else {

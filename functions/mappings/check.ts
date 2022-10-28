@@ -1,18 +1,23 @@
 import { Request, Response } from 'express'
-import { CHAIN_INFO } from '../../src/configs/chains'
-import { init } from '../../src/utils/db'
+import { doesMappingExist } from '../../src/utils/db'
 
 async function check(req: Request, res: Response) {
-	const { chain, from, to } = req.body
-	if(chain === undefined) {
-		res.status(400).json({ 'Error': 'Missing chain' })
-	} else if(typeof chain !== 'string') {
-		res.status(401).json({ 'Error': 'Invalid chain' })
-	} else if(CHAIN_INFO[chain] === undefined) {
-		res.status(402).json({ 'Error': 'Unsupported chain' })
+	const { id, from, to } = req.body
+	if(id === undefined) {
+		res.status(400).json({ 'Error': 'Missing ID' })
+	} else if(typeof id !== 'string') {
+		res.status(401).json({ 'Error': 'Invalid ID' })
+	} else if(from === undefined) {
+		res.status(403).json({ 'Error': 'Missing \'from\'' })
+	} else if(typeof from !== 'string') {
+		res.status(404).json({ 'Error': 'Invalid \'from\'' })
+	} else if(to === undefined) {
+		res.status(405).json({ 'Error': 'Missing \'to\'' })
+	} else if(typeof to !== 'string') {
+		res.status(406).json({ 'Error': 'Invalid \'to\'' })
 	} else {
-		console.log(chain, from, to)
-		const ret = await init()
+		console.log(id, from, to)
+		const ret = await doesMappingExist(id, from, to)
 		console.log(ret)
 		res.status(200).json({ 'Success': 'Success' })
 	}
