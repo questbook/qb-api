@@ -1,4 +1,3 @@
-import { OnChainEvent } from '../configs/events'
 import {
 	ApplicationUpdateQuery,
 	DaoCreatedQuery,
@@ -19,30 +18,31 @@ import getFromIPFS from './ipfs'
 import { formatTime } from './timeUtils'
 import { getTokenDetails, getTotalValue } from './tokenUtils'
 
-function formatData(event: OnChainEvent, data: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function formatData(event: string, data: any) {
 	switch (event) {
-	case OnChainEvent.DaoCreated:
+	case 'DaoCreated':
 		return formatDaoCreatedData(data)
 
-	case OnChainEvent.GrantCreated:
+	case 'GrantCreated':
 		return formatGrantCreatedData(data)
 
-	case OnChainEvent.GrantAppliedTo:
+	case 'GrantAppliedTo':
 		return formatGrantAppliedToData(data)
 
-	case OnChainEvent.ApplicationUpdate:
+	case 'ApplicationUpdate':
 		return formatApplicationUpdateData(data)
 
-	case OnChainEvent.FundSent:
+	case 'FundSent':
 		return formatFundSentData(data)
 
-		// case OnChainEvent.ReviewerAddedToGrantApplication:
+		// case ReviewerAddedToGrantApplication:
 		// 	return formatReviewerAddedToGrantApplicationData(data)
 
-	case OnChainEvent.ReviewerInvitedToDao:
+	case 'ReviewerInvitedToDao':
 		return formatReviewerInvitedToDaoData(data)
 
-	case OnChainEvent.ReviewerSubmittedReview:
+	case 'ReviewerSubmittedReview':
 		return formatReviewerSubmittedReviewData(data)
 
 	default:
@@ -74,7 +74,7 @@ function formatDaoCreatedData(result: DaoCreatedQuery) {
 			createdBy,
 		}
 
-		// logger.info({ data, retData }, `${OnChainEvent.DaoCreated}: FORMAT DATA`)
+		// logger.info({ data, retData }, `${DaoCreated}: FORMAT DATA`)
 
 		ret.push(retData)
 	}
@@ -107,7 +107,7 @@ function formatGrantCreatedData(result: GrantCreatedQuery) {
 			),
 		}
 
-		// logger.info({ data, retData }, `${OnChainEvent.GrantCreated}: FORMAT DATA`)
+		// logger.info({ data, retData }, `${GrantCreated}: FORMAT DATA`)
 
 		ret.push(retData)
 	}
@@ -164,11 +164,11 @@ function formatGrantAppliedToData(result: GrantAppliedToQuery) {
 						feedbackFromDev: milestone.feedbackFromDev,
 					}
 				}),
-        totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
-        totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
+				totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
+				totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
 			}
 
-			// logger.info({ data, retData }, `${OnChainEvent.GrantAppliedTo}: FORMAT DATA`)
+			// logger.info({ data, retData }, `${GrantAppliedTo}: FORMAT DATA`)
 
 			ret.push(retData)
 		}
@@ -203,7 +203,7 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 					),
 				),
 				updatedAt: formatTime(application.updatedAtS),
-        milestones: application.milestones.map((milestone) => {
+				milestones: application.milestones.map((milestone) => {
 					return {
 						milestoneID: milestone.id,
 						title: milestone.title,
@@ -222,11 +222,11 @@ function formatApplicationUpdateData(result: ApplicationUpdateQuery) {
 						feedbackFromDev: milestone.feedbackFromDev,
 					}
 				}),
-        totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
-        totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
+				totalMilestoneAmount: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amount)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
+				totalMilestoneAmountPaid: getTokenDetails(getTotalValue(application.milestones.map((milestone) => milestone.amountPaid)), grant.reward, grant.workspace.chain[0] as SupportedNetwork),
 			}
 
-			// logger.info({ data, retData }, `${OnChainEvent.ApplicationUpdate}: FORMAT DATA`)
+			// logger.info({ data, retData }, `${ApplicationUpdate}: FORMAT DATA`)
 
 			ret.push(retData)
 		}
@@ -267,7 +267,7 @@ function formatFundSentData(result: FundSentQuery) {
 				),
 			}
 
-			// logger.info({ data, retData }, `${OnChainEvent.FundSent}: FORMAT DATA`)
+			// logger.info({ data, retData }, `${FundSent}: FORMAT DATA`)
 
 			ret.push(retData)
 		}
@@ -276,6 +276,7 @@ function formatFundSentData(result: FundSentQuery) {
 	return ret
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function formatReviewerAddedToGrantApplicationData(
 	result: ReviewerAddedToGrantApplicationQuery,
 ) {
@@ -295,7 +296,7 @@ function formatReviewerInvitedToDaoData(result: ReviewerInvitedToDaoQuery) {
 			updatedAt: formatTime(workspaceMember.updatedAt),
 		}
 
-		// logger.info({ data, retData }, `${OnChainEvent.ReviewerInvitedToDao}: FORMAT DATA`)
+		// logger.info({ data, retData }, `${ReviewerInvitedToDao}: FORMAT DATA`)
 
 		ret.push(retData)
 	}
@@ -332,7 +333,7 @@ async function formatReviewerSubmittedReviewData(
 					rawData: stringData,
 				}
 
-				// logger.info({ data, retData }, `${OnChainEvent.ReviewerSubmittedReview}: FORMAT DATA`)
+				// logger.info({ data, retData }, `${ReviewerSubmittedReview}: FORMAT DATA`)
 
 				ret.push(retData)
 			}

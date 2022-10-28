@@ -5,19 +5,15 @@ import {
 	InMemoryCache,
 } from '@apollo/client'
 import fetch from 'cross-fetch'
-import { CHAIN_INFO } from "../configs/chains"
-import { OnChainEvent } from '../configs/events'
-
-const Pino = require('pino')
-
-const logger = Pino()
+import { CHAIN_INFO } from '../configs/chains'
 
 async function executeQuery(
 	chainId: string,
 	from: number,
 	to: number,
 	query: DocumentNode,
-	type: OnChainEvent,
+	type: string,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	variables: {[key: string]: any} = {},
 ) {
 	// logger.info({ chainId, from, to }, `${type}: Executing query`)

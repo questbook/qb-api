@@ -1,10 +1,15 @@
-import { CHAIN_INFO } from "../configs/chains"
-import { OnChainEvent } from '../configs/events'
+import { CHAIN_INFO } from '../configs/chains'
 
 const getSupportedChainIdFromSupportedNetwork = (network: string) => {
-	if (!network.includes('_')) return undefined
+	if(!network.includes('_')) {
+		return undefined
+	}
+
 	const chainId = network.split('_')[1]
-	if (CHAIN_INFO[chainId] === undefined) return undefined
+	if(CHAIN_INFO[chainId] === undefined) {
+		return undefined
+	}
+
 	return chainId
 }
 
@@ -13,8 +18,9 @@ const getNetworkName = (chain: string[]) => {
 	return chainId ? CHAIN_INFO[chainId].name : ''
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getRewardToken = (reward: any, chainId: string) => {
-	if(reward.token && reward.token.label) {
+	if(reward?.token && reward?.token?.label) {
 		// console.log(reward.token)
 		return reward.token.label
 	} else {
@@ -24,6 +30,6 @@ const getRewardToken = (reward: any, chainId: string) => {
 	}
 }
 
-const getKey = (type: OnChainEvent) => `${type}`
+const getKey = (type: string) => `${type}`
 
 export { getSupportedChainIdFromSupportedNetwork, getNetworkName, getRewardToken, getKey }

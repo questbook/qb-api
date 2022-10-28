@@ -1,11 +1,12 @@
 import { BigNumber, ethers } from 'ethers'
-import { CHAIN_INFO } from "../configs/chains"
+import { CHAIN_INFO } from '../configs/chains'
 import { getSupportedChainIdFromSupportedNetwork } from './chainUtils'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getTokenDetails = (value: string, reward: any, chain: string) => {
 	return ethers.utils.formatUnits(
 		value,
-		reward.token && reward.token.label
+		reward?.token && reward?.token?.label
 			? reward.token.decimal
 			: CHAIN_INFO[
 				getSupportedChainIdFromSupportedNetwork(
