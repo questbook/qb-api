@@ -1,14 +1,10 @@
 import 'dotenv/config'
-import { OnChainEvent } from '../configs/events'
 import { fetchData } from './fetchData'
 
-const Pino = require('pino')
-
-const logger = Pino()
-
-export async function work(type: OnChainEvent, chain: string, variables?: {[key: string]: any}) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function work(type: string, chain: string, variables?: {[key: string]: any}) {
 	// Call graphQL endpoint and get the data from all chains
-	const { data, count, toTimestamp } = await fetchData(type, chain, variables)
+	const { data } = await fetchData(type, chain, variables)
 	// logger.info({ data }, `${type}: Data from all chains`)
 
 	return data

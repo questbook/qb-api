@@ -1,4 +1,3 @@
-import { OnChainEvent } from '../configs/events'
 import { ApplicationUpdateDocument, DaoCreatedDocument, FundSentDocument, GrantAppliedToDocument, GrantCreatedDocument, ReviewerAddedToGrantApplicationDocument, ReviewerInvitedToDaoDocument, ReviewerSubmittedReviewDocument } from '../generated/graphql'
 import formatData from './dataFormat'
 import executeQuery from './query'
@@ -7,38 +6,39 @@ const Pino = require('pino')
 
 const logger = Pino()
 
-export async function fetchData(type: OnChainEvent, chainId: string, variables?: {[key: string]: any}) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function fetchData(type: string, chainId: string, variables?: {[key: string]: any}) {
 	let documentNode = null
 	switch (type) {
-	case OnChainEvent.DaoCreated:
+	case 'DaoCreated':
 		documentNode = DaoCreatedDocument
 		break
 
-	case OnChainEvent.GrantCreated:
+	case 'GrantCreated':
 		documentNode = GrantCreatedDocument
 		break
 
-	case OnChainEvent.GrantAppliedTo:
+	case 'GrantAppliedTo':
 		documentNode = GrantAppliedToDocument
 		break
 
-	case OnChainEvent.ApplicationUpdate:
+	case 'ApplicationUpdate':
 		documentNode = ApplicationUpdateDocument
 		break
 
-	case OnChainEvent.FundSent:
+	case 'FundSent':
 		documentNode = FundSentDocument
 		break
 
-	case OnChainEvent.ReviewerInvitedToDao:
+	case 'ReviewerInvitedToDao':
 		documentNode = ReviewerInvitedToDaoDocument
 		break
 
-	case OnChainEvent.ReviewerAddedToGrantApplication:
+	case 'ReviewerAddedToGrantApplication':
 		documentNode = ReviewerAddedToGrantApplicationDocument
 		break
 
-	case OnChainEvent.ReviewerSubmittedReview:
+	case 'ReviewerSubmittedReview':
 		documentNode = ReviewerSubmittedReviewDocument
 		break
 
