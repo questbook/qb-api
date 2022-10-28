@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser'
 import express, { Request, Response } from 'express'
 import serverless from 'serverless-http'
+import check from './functions/mappings/check'
 import applicationUpdate from './functions/zapier/ApplicationUpdate'
 import daoCreated from './functions/zapier/DaoCreated'
 import fundSent from './functions/zapier/FundSent'
@@ -60,7 +61,7 @@ app.post('/mapping/:event', async(req: Request, res: Response) => {
 	if(event === 'create') {
 
 	} else if(event === 'check') {
-
+		check(req, res)
 	} else {
 		res.status(400).json({ error: 'Operation not supported' })
 	}
