@@ -12,6 +12,8 @@ provider:
   apiName: ${self:service}
   memorySize: 256
   logRetentionInDays: 14
+  httpApi:
+    cors: false
 
 functions:
   api:

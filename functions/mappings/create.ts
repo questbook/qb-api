@@ -5,19 +5,21 @@ import ABI from '../../abi/Communication.json'
 import { CHAIN_INFO } from '../../src/configs/chains'
 import { Data, Mapping } from '../../src/types/mapping'
 import { createMapping, doesMappingExist } from '../../src/utils/db'
+const Pino = require('pino')
 
+const logger = Pino()
 async function decodeTransaction(chainId: number, txHash: string) {
 	let provider: ethers.providers.BaseProvider
 	if(chainId === 5) {
-		provider = ethers.getDefaultProvider('goerli')
+		provider = ethers.getDefaultProvider('goerli', { infura: process.env.INFURA_ID })
 	} else if(chainId === 10) {
-		provider = ethers.getDefaultProvider('optimism')
+		provider = ethers.getDefaultProvider('optimism', { infura: process.env.INFURA_ID })
 	} else if(chainId === 137) {
-		provider = ethers.getDefaultProvider('matic')
+		provider = ethers.getDefaultProvider('matic', { infura: process.env.INFURA_ID })
 	} else if(chainId === 42220) {
 		provider = new ethers.providers.JsonRpcProvider('https://forno.celo.org')
 	} else {
-		return { error: 'Invalid chain ID' }
+		return { error: 'Invalid chain ID', value: false }
 	}
 
 	const tx = await provider.getTransactionReceipt(txHash)
@@ -25,7 +27,7 @@ async function decodeTransaction(chainId: number, txHash: string) {
 	const iface = new ethers.utils.Interface(ABI)
 
 	try {
-		let data: Data = { error: 'No event found' }
+		let data: Data = { error: 'No event found', value: false }
 		for(const log of tx.logs) {
 			const event = iface.parseLog(log)
 			if(event.name === 'EmailAdded') {
@@ -35,14 +37,16 @@ async function decodeTransaction(chainId: number, txHash: string) {
 					message: event.args.message,
 					sender: event.args.sender,
 					timestamp: event.args.timestamp.toNumber(),
+					value: true,
 				}
+				logger.info(`Decoded transaction ${txHash} on chain ${chainId}: ${JSON.stringify(data)}`)
 				break
 			}
 		}
 
 		return data
 	} catch(e) {
-		return { error: `Some error occurred - ${e}` }
+		return { error: `Some error occurred - ${e}`, value: false }
 	}
 }
 
@@ -58,7 +62,7 @@ async function isValid(
 	}
 
 	const ret = await decodeTransaction(chainIdFromAPI, txHash)
-	if(ret.error) {
+	if(!ret.value) {
 		return {
 			error: `Could not decode transaction: ${ret.error}`,
 			value: false,
@@ -69,7 +73,7 @@ async function isValid(
 
 	const { chainId, emailHash, sender, message, timestamp } = ret
 	if(!emailHash || !chainId || !sender || !message || !timestamp) {
-		return { error: 'Could not decode transaction', value: false }
+		return { error: 'Could not decode all values from transaction!', value: false }
 	}
 
 	if(chainId !== chainIdFromAPI) {
@@ -98,7 +102,7 @@ async function isValid(
 }
 
 async function create(req: Request, res: Response) {
-	const { id, chainId, wallet, transactionHash, from, to } = req.body
+	const { id, chainId, wallet, transactionHash, sender, to } = req.body
 	console.log(req.body)
 	if(id === undefined) {
 		res.status(400).json({ error: 'Missing ID', value: false })
@@ -120,24 +124,24 @@ async function create(req: Request, res: Response) {
 		res.status(408).json({ error: 'Missing \'wallet\'', value: false })
 	} else if(typeof wallet !== 'string') {
 		res.status(409).json({ error: 'Invalid \'wallet\'', value: false })
-	} else if(from === undefined) {
-		res.status(410).json({ error: 'Missing \'from\'', value: false })
-	} else if(typeof from !== 'string') {
-		res.status(411).json({ error: 'Invalid \'from\'', value: false })
+	} else if(sender === undefined) {
+		res.status(410).json({ error: 'Missing \'sender\'', value: false })
+	} else if(typeof sender !== 'string') {
+		res.status(411).json({ error: 'Invalid \'sender\'', value: false })
 	} else if(to === undefined) {
 		res.status(412).json({ error: 'Missing \'to\'', value: false })
 	} else if(typeof to !== 'string') {
 		res.status(413).json({ error: 'Invalid \'to\'', value: false })
 	} else {
-		const exists = await doesMappingExist(id, from, to)
+		const exists = await doesMappingExist(id, sender, to)
 		console.log(exists)
 		if(exists.value) {
 			res.status(200).json(exists)
 		} else {
-		    let ret = await isValid(chainId, from, to, transactionHash, wallet)
+		    let ret = await isValid(chainId, sender, to, transactionHash, wallet)
 			// res.status(200).json(ret)
 			if(ret.value) {
-				ret = await createMapping(id, from, to)
+				ret = await createMapping(id, sender, to)
 				if(ret?.error) {
 					res.status(500).json(ret)
 				} else {

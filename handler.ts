@@ -13,6 +13,17 @@ import reviewerSubmittedReview from './functions/zapier/ReviewerSubmittedReview'
 
 const app = express()
 
+const headers = {
+	'Access-Control-Allow-Origin': '*',
+	'Access-Control-Allow-Headers': '*', // this will allow all CORS requests
+	'Content-Type': 'application/json' // this shows the expected content type
+}
+
+app.options('/*', (_, res) => {
+	res.set(headers)
+	res.sendStatus(200)
+})
+
 // app.use(express.json());
 app.use(bodyParser.json())
 
@@ -21,6 +32,7 @@ app.post('/zapier/v1/:event', async(req: Request, res: Response) => {
 	if(event === undefined) {
 		res.status(400).send('Invalid event')
 	} else {
+		res.set(headers)
 		switch (event) {
 		case 'DaoCreated':
 			daoCreated(req, res)
@@ -56,11 +68,6 @@ app.post('/zapier/v1/:event', async(req: Request, res: Response) => {
 	}
 })
 
-const headers = {
-	'content-type': 'application/json',
-	'access-control-allow-origin': '*', // lazy cors config
-}
-
 app.post('/mapping/:event', async(req: Request, res: Response) => {
 	const { event } = req.params
 
@@ -76,6 +83,7 @@ app.post('/mapping/:event', async(req: Request, res: Response) => {
 })
 
 app.use((req, res,) => {
+	res.set(headers)
 	return res.status(404).json({
 		error: 'Not Found',
 	})

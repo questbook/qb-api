@@ -11,4 +11,5 @@ export type Data = {
     message?: string
     timestamp?: number
     error?: string
+    value: boolean
   };
