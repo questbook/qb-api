@@ -56,9 +56,15 @@ app.post('/zapier/v1/:event', async(req: Request, res: Response) => {
 	}
 })
 
+const headers = {
+	'content-type': 'application/json',
+	'access-control-allow-origin': '*', // lazy cors config
+}
+
 app.post('/mapping/:event', async(req: Request, res: Response) => {
 	const { event } = req.params
 
+	res.set(headers)
 	if(event === 'create') {
 		console.log('Here!')
 		create(req, res)
