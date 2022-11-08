@@ -17,11 +17,11 @@ async function doesMappingExist(id: string, from: string, to: string): Promise<M
 			})
 			.promise()
 		if(!result.Item) {
-			return { error: 'ID not present', value: false }
+			return { message: 'ID not present', value: false }
 		} else if(result.Item['from'] === from && result.Item['to'] === to) {
 			return { message: 'Mapping exists', value: true }
 		} else {
-			return { error: 'Mapping does not exist', value: false }
+			return { message: 'Mapping does not exist', value: false }
 		}
 	} catch(err) {
 		console.error(err)
