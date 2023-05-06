@@ -1,7 +1,7 @@
 schema:
-  - https://the-graph.questbook.app/subgraphs/name/qb-subgraph-rinkeby
+  - https://the-graph.questbook.app/subgraphs/name/qb-subgraph-optimism-mainnet
 documents:
-  - ./graphql/*.graphql
+  - ./src/graphql/*.graphql
 overwrite: true
 generates:
   ./src/generated/graphql.ts:

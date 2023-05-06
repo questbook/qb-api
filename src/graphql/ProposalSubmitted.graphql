@@ -1,16 +1,19 @@
-query ReviewerAddedToGrantApplication(
+query ProposalSubmitted(
   $lowerLimit: Int!
   $upperLimit: Int!
-  $workspaceId: String!
+  $grantId: ID!
 ) {
-  grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+  grant(id: $grantId, subgraphError: allow) {
     id
+    title
     reward {
       id
       asset
       committed
       token {
         id
+        label
+        decimal
       }
     }
     workspace {
@@ -21,29 +24,38 @@ query ReviewerAddedToGrantApplication(
       where: {
         updatedAtS_gt: $lowerLimit
         updatedAtS_lte: $upperLimit
-        version_gt: 1
-        reviewers_not: []
+        version: 1
       }
     ) {
       id
-      state
-      version
       projectName: fields(where: { field_ends_with: "projectName" }) {
         values {
           title: value
         }
       }
+      applicantEmail: fields(where: { field_ends_with: "applicantEmail" }) {
+        values {
+          email: value
+        }
+      }
+      applicantAddress: fields(where: { field_ends_with: "applicantAddress" }) {
+        values {
+          address: value
+        }
+      }
       createdBy: applicantId
       createdAtS
+      updatedAtS
       milestones {
         id
         title
         amount
         amountPaid
-        feedbackDao
-        feedbackDev
+        feedbackFromDAO: feedbackDao
+        feedbackFromDev: feedbackDev
         state
       }
+      state
     }
   }
 }

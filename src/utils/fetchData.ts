@@ -1,4 +1,5 @@
-import { ApplicationUpdateDocument, DaoCreatedDocument, FundSentDocument, GrantAppliedToDocument, GrantCreatedDocument, ReviewerAddedToGrantApplicationDocument, ReviewerInvitedToDaoDocument, ReviewerSubmittedReviewDocument } from '../generated/graphql'
+import { PayoutStatusDocument, ProposalSubmittedDocument, ProposalUpdatedDocument, ReviewerSubmittedReviewDocument } from '../generated/graphql'
+import { ZapierEvent } from '../types'
 import formatData from './dataFormat'
 import executeQuery from './query'
 
@@ -7,35 +8,19 @@ const Pino = require('pino')
 const logger = Pino()
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function fetchData(type: string, chainId: string, variables?: {[key: string]: any}) {
+export async function fetchData(type: ZapierEvent, chainId: string, variables?: {[key: string]: any}) {
 	let documentNode = null
 	switch (type) {
-	case 'DaoCreated':
-		documentNode = DaoCreatedDocument
+	case 'PayoutStatus':
+		documentNode = PayoutStatusDocument
 		break
 
-	case 'GrantCreated':
-		documentNode = GrantCreatedDocument
+	case 'ProposalSubmitted':
+		documentNode = ProposalSubmittedDocument
 		break
 
-	case 'GrantAppliedTo':
-		documentNode = GrantAppliedToDocument
-		break
-
-	case 'ApplicationUpdate':
-		documentNode = ApplicationUpdateDocument
-		break
-
-	case 'FundSent':
-		documentNode = FundSentDocument
-		break
-
-	case 'ReviewerInvitedToDao':
-		documentNode = ReviewerInvitedToDaoDocument
-		break
-
-	case 'ReviewerAddedToGrantApplication':
-		documentNode = ReviewerAddedToGrantApplicationDocument
+	case 'ProposalUpdated':
+		documentNode = ProposalUpdatedDocument
 		break
 
 	case 'ReviewerSubmittedReview':

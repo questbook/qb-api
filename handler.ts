@@ -3,13 +3,11 @@ import express, { Request, Response } from 'express'
 import serverless from 'serverless-http'
 import check from './functions/mappings/check'
 import create from './functions/mappings/create'
-import applicationUpdate from './functions/zapier/ApplicationUpdate'
-import daoCreated from './functions/zapier/DaoCreated'
-import fundSent from './functions/zapier/FundSent'
-import grantAppliedTo from './functions/zapier/GrantAppliedTo'
-import grantCreated from './functions/zapier/GrantCreated'
-import reviewerInvitedToDao from './functions/zapier/ReviewerInvitedToDAO'
+import proposalUpdated from './functions/zapier/ProposalUpdated'
+import payoutStatus from './functions/zapier/PayoutStatus'
+import proposalSubmitted from './functions/zapier/ProposalSubmitted'
 import reviewerSubmittedReview from './functions/zapier/ReviewerSubmittedReview'
+import { ZapierEvent } from './src/types'
 
 const app = express()
 
@@ -29,33 +27,21 @@ app.use(bodyParser.json())
 
 app.post('/zapier/v1/:event', async(req: Request, res: Response) => {
 	const { event } = req.params
-	if(event === undefined) {
+	if(event === undefined || event as ZapierEvent === undefined) {
 		res.status(400).send('Invalid event')
 	} else {
 		res.set(headers)
-		switch (event) {
-		case 'DaoCreated':
-			daoCreated(req, res)
+		switch (event as ZapierEvent) {
+		case 'ProposalSubmitted':
+			proposalSubmitted(req, res)
 			break
 
-		case 'GrantCreated':
-			grantCreated(req, res)
+		case 'ProposalUpdated':
+			proposalUpdated(req, res)
 			break
 
-		case 'GrantAppliedTo':
-			grantAppliedTo(req, res)
-			break
-
-		case 'ApplicationUpdate':
-			applicationUpdate(req, res)
-			break
-
-		case 'FundSent':
-			fundSent(req, res)
-			break
-
-		case 'ReviewerInvitedToDao':
-			reviewerInvitedToDao(req, res)
+		case 'PayoutStatus':
+			payoutStatus(req, res)
 			break
 
 		case 'ReviewerSubmittedReview':

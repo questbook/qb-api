@@ -1,9 +1,9 @@
-query ApplicationUpdate(
+query ProposalUpdated(
   $lowerLimit: Int!
   $upperLimit: Int!
-  $workspaceId: String!
+  $grantId: ID!
 ) {
-  grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+  grant(id: $grantId, subgraphError: allow) {
     id
     title
     workspace {
