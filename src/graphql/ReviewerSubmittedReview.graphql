@@ -1,9 +1,9 @@
 query ReviewerSubmittedReview(
   $lowerLimit: Int!
   $upperLimit: Int!
-  $workspaceId: String!
+  $grantId: ID!
 ) {
-  grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+  grant(id: $grantId, subgraphError: allow) {
     id
     applications {
       id
@@ -11,7 +11,6 @@ query ReviewerSubmittedReview(
         where: { createdAtS_gt: $lowerLimit, createdAtS_lte: $upperLimit }
       ) {
         id
-        reviewerId
         reviewer {
           actorId
           workspace {

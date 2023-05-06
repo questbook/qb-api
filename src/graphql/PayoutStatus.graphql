@@ -1,5 +1,5 @@
-query FundSent($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
-  grants(subgraphError: allow, where: { workspace: $workspaceId }) {
+query PayoutStatus($lowerLimit: Int!, $upperLimit: Int!, $grantId: ID!) {
+  grant(id: $grantId, subgraphError: allow) {
     id
     workspace {
       id
@@ -18,13 +18,15 @@ query FundSent($lowerLimit: Int!, $upperLimit: Int!, $workspaceId: String!) {
       where: {
         createdAtS_gt: $lowerLimit
         createdAtS_lte: $upperLimit
-        type: funds_disbursed
+        type_in: [funds_disbursed_from_safe, funds_disbursed_from_wallet]
       }
       orderBy: createdAtS
       orderDirection: desc
     ) {
       id
       type
+      amount
+      status
       milestone {
         id
         title
