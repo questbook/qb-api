@@ -1,4 +1,5 @@
 node_modules
 .serverless
+.eslintcache
 .env
 .build/

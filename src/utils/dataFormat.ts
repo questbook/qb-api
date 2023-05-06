@@ -7,7 +7,6 @@ import {
 } from '../generated/graphql'
 import { ZapierEvent } from '../types'
 import {
-	getNetworkName,
 	getRewardToken,
 	getSupportedChainIdFromSupportedNetwork,
 } from './chainUtils'
@@ -48,16 +47,10 @@ function formatProposalSubmittedData(result: ProposalSubmittedQuery) {
 			applicationID: application.id,
 			grantID: grant.id,
 			grantTitle: grant.title,
-			daoID: grant.workspace.id,
 			title: application.projectName[0].values[0].title,
 			createdAt: formatTime(application.createdAtS),
 			createdBy: application.createdBy,
-			chain: getNetworkName(grant.workspace.chain),
 			state: application.state,
-			publicEmail:
-        application.applicantEmail.length > 0
-        	? application.applicantEmail[0].values[0].email
-        	: null,
 			currency: getRewardToken(
 				grant.reward,
 				getSupportedChainIdFromSupportedNetwork(
@@ -121,8 +114,6 @@ function formatProposalUpdatedData(result: ProposalUpdatedQuery) {
 			title: application.projectName[0].values[0].title,
 			grantID: grant.id,
 			grantTitle: grant.title,
-			daoID: grant.workspace.id,
-			chain: getNetworkName(grant.workspace.chain),
 			state: application.state,
 			feedback: application.feedbackDao,
 			currency: getRewardToken(
@@ -186,12 +177,10 @@ function formatPayoutStatusData(result: PayoutStatusQuery) {
 		const retData = {
 			id: `${grant.id}.${fundTransfer.id}`,
 			grantID: grant.id,
-			daoID: grant.workspace.id,
 			milestoneID: fundTransfer.milestone.id,
 			milestoneTitle: fundTransfer.milestone.title,
 			applicationID: fundTransfer.application.id,
 			applicationTitle: fundTransfer.application.projectName[0].values[0].title,
-			chain: getNetworkName(grant.workspace.chain),
 			amountPaid: getTokenDetails(
 				fundTransfer.amount,
 				grant.reward,
@@ -244,10 +233,8 @@ async function formatReviewerSubmittedReviewData(
 
 			const retData = {
 				id: `${grant.id}.${application.id}.${review.id}.${review.createdAtS}`,
-				daoID: review.reviewer.workspace.id,
 				grantID: grant.id,
 				applicationID: application.id,
-				chain: getNetworkName(review.reviewer.workspace.chain),
 				isApproved: json['isApproved'],
 				reviews: [...json['items']],
 			}

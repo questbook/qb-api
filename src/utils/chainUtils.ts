@@ -13,11 +13,6 @@ const getSupportedChainIdFromSupportedNetwork = (network: string) => {
 	return chainId
 }
 
-const getNetworkName = (chain: string[]) => {
-	const chainId = getSupportedChainIdFromSupportedNetwork(chain[0])
-	return chainId ? CHAIN_INFO[chainId].name : ''
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getRewardToken = (reward: any, chainId: string) => {
 	if(reward?.token && reward?.token?.label) {
@@ -32,4 +27,4 @@ const getRewardToken = (reward: any, chainId: string) => {
 
 const getKey = (type: string) => `${type}`
 
-export { getSupportedChainIdFromSupportedNetwork, getNetworkName, getRewardToken, getKey }
+export { getSupportedChainIdFromSupportedNetwork, getRewardToken, getKey }
