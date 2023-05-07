@@ -1,139 +1,51 @@
-<!--
-title: 'Serverless Framework Node Express API service backed by DynamoDB on AWS'
-description: 'This template demonstrates how to develop and deploy a simple Node Express API service backed by DynamoDB running on AWS Lambda using the traditional Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: nodeJS
-priority: 1
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# Introduction
 
-# Serverless Framework Node Express API on AWS
+This repository contains the code for the Questbook API endpoint (https://api.questbook.app) built using the Serverless framework. There are two types of endpoints:
 
-This template demonstrates how to develop and deploy a simple Node Express API service, backed by DynamoDB database, running on AWS Lambda using the traditional Serverless Framework.
+1. `/zapier/v1/:chain/:event` - Designed specifically for the Questbook Zapier App.
+2. `/mappings/:event` - Used to map email IDs to in-app wallet addresses.
 
+## How to Run Locally
 
-## Anatomy of the template
+1. Clone the repository.
+2. Run `yarn` to install all the packages.
+3. Run `sls offline` and wait for the TypeScript to compile.
+4. The API is ready to be tested.
 
-This template configures a single function, `api`, which is responsible for handling all incoming requests thanks to the `httpApi` event. To learn more about `httpApi` event configuration options, please refer to [httpApi event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/). As the event is configured in a way to accept all incoming requests, `express` framework is responsible for routing and handling requests internally. Implementation takes advantage of `serverless-http` package, which allows you to wrap existing `express` applications. To learn more about `serverless-http`, please refer to corresponding [GitHub repository](https://github.com/dougmoscrop/serverless-http). Additionally, it also handles provisioning of a DynamoDB database that is used for storing data about users. The `express` application exposes two endpoints, `POST /users` and `GET /user/{userId}`, which allow to create and retrieve users.
+## Endpoint Information
 
-## Usage
+### `/zapier/v1/:chain/:event`
 
-### Deployment
+- `chain`: Can take up values 5 (Goerli), 42220 (Celo), 137 (Polygon), or 10 (Optimism). It specifies which subgraph to query. Any other value would return an error.
+- `event`: Can take the following values:
+  - `ProposalSubmitted`: Queries the subgraph to list proposals submitted in the last 24 hours.
+  - `ProposalUpdated`: Queries the subgraph to list proposals updated in the last 24 hours.
+  - `PayoutStatus`: Queries the subgraph to list fund transfers initiated or updated in the last 24 hours.
+  - `ReviewerSubmittedReview`: Queries the subgraph to list reviews submitted in the last 24 hours.
 
-Install dependencies with:
+### `/mappings/:event`
 
-```
-npm install
-```
+- `event`: Can be either `check` or `create`.
+  - `check`: Confirms if there exists a mapping from an in-app wallet address to any email address.
+  - `create`: Inserts a new mapping into the database if a mapping does not exist.
 
-and then deploy with:
+## How to Add a New Endpoint/Event for Zapier Integration
 
-```
-serverless deploy
-```
+1. Under `src/graphql`, create a new `.graphql` file describing the query to be executed upon calling the endpoint.
+2. Run `yarn generate`. The `src/generated/graphql.ts` file should be modified to contain the types for the above query.
+3. Add the relevant type string for the new `event` in `src/types/index.ts`.
+4. Inside `functions/zapier`, create a new `.ts` file with the name of the event.
+5. Check the formatting of the data received in the request body inside the `.ts` file, and call the function `work` defined in `src/utils/work.ts`.
+6. Modify two files:
+   1. In `src/utils/fetchData.ts`, add the case for the newly introduced event in the `switch-case` block and specify the `Apollo.DocumentNode` to be called for the new event. Import the `Apollo.DocumentNode` from `src/generated/graphql.ts`. It should be the same one generated in step 2.
+   2. In `src/utils/dataFormat.ts`, modify the `switch-case` block in a similar fashion to specify the formatting function to be applied to the data returned by the query specified in the above step.
+7. You are good to go.
 
-After running deploy, you should see output similar to:
+**Tip**: If you receive a response like `{'error': {}}` upon querying an endpoint, check the formatting function. You might be trying to access non-existent items in the query.
 
-```bash
-Deploying aws-node-express-dynamodb-api-project to stage dev (us-east-1)
-
-✔ Service deployed to stack aws-node-express-dynamodb-api-project-dev (196s)
-
-endpoint: ANY - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com
-functions:
-  api: aws-node-express-dynamodb-api-project-dev-api (766 kB)
-```
-
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [`httpApi` event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/). Additionally, in current configuration, the DynamoDB table will be removed when running `serverless remove`. To retain the DynamoDB table even after removal of the stack, add `DeletionPolicy: Retain` to its resource definition.
-
-### Invocation
-
-After successful deployment, you can create a new user by calling the corresponding endpoint:
-
-```bash
-curl --request POST 'https://xxxxxx.execute-api.us-east-1.amazonaws.com/users' --header 'Content-Type: application/json' --data-raw '{"name": "John", "userId": "someUserId"}'
-```
-
-Which should result in the following response:
-
-```bash
-{"userId":"someUserId","name":"John"}
-```
-
-You can later retrieve the user by `userId` by calling the following endpoint:
-
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/users/someUserId
-```
-
-Which should result in the following response:
-
-```bash
-{"userId":"someUserId","name":"John"}
-```
-
-If you try to retrieve user that does not exist, you should receive the following response:
-
-```bash
-{"error":"Could not find user with provided \"userId\""}
-```
-
-### Local development
-
-It is also possible to emulate DynamoDB, API Gateway and Lambda locally using the `serverless-dynamodb-local` and `serverless-offline` plugins. In order to do that, run:
-
-```bash
-serverless plugin install -n serverless-dynamodb-local
-serverless plugin install -n serverless-offline
-```
-
-It will add both plugins to `devDependencies` in `package.json` file as well as will add it to `plugins` in `serverless.yml`. Make sure that `serverless-offline` is listed as last plugin in `plugins` section:
+## About the .env File
 
 ```
-plugins:
-  - serverless-dynamodb-local
-  - serverless-offline
+TABLE_NAME=<Name of the AWS Dynamo DB Table that stores the mappings>
+INFURA_ID=<ID of the Infura App. Needed when decoding the transaction while creating a new mapping>
 ```
-
-You should also add the following config to `custom` section in `serverless.yml`:
-
-```
-custom:
-  (...)
-  dynamodb:
-    start:
-      migrate: true
-    stages:
-      - dev
-```
-
-Additionally, we need to reconfigure `AWS.DynamoDB.DocumentClient` to connect to our local instance of DynamoDB. We can take advantage of `IS_OFFLINE` environment variable set by `serverless-offline` plugin and replace:
-
-```javascript
-const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
-```
-
-with the following:
-
-```javascript
-const dynamoDbClientParams = {};
-if (process.env.IS_OFFLINE) {
-  dynamoDbClientParams.region = 'localhost'
-  dynamoDbClientParams.endpoint = 'http://localhost:8000'
-}
-const dynamoDbClient = new AWS.DynamoDB.DocumentClient(dynamoDbClientParams);
-```
-
-After that, running the following command with start both local API Gateway emulator as well as local instance of emulated DynamoDB:
-
-```bash
-serverless offline start
-```
-
-To learn more about the capabilities of `serverless-offline` and `serverless-dynamodb-local`, please refer to their corresponding GitHub repositories:
-- https://github.com/dherault/serverless-offline
-- https://github.com/99x/serverless-dynamodb-local

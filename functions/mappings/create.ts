@@ -107,31 +107,31 @@ async function create(req: Request, res: Response) {
 	if(id === undefined) {
 		res.status(400).json({ error: 'Missing ID', value: false })
 	} else if(typeof id !== 'string') {
-		res.status(401).json({ error: 'Invalid ID', value: false })
+		res.status(400).json({ error: 'Invalid ID', value: false })
 	} else if(chainId === undefined) {
-		res.status(402).json({ error: 'Missing chain ID', value: false })
+		res.status(400).json({ error: 'Missing chain ID', value: false })
 	} else if(typeof chainId !== 'number') {
-		res.status(403).json({ error: 'Invalid chain ID', value: false })
+		res.status(400).json({ error: 'Invalid chain ID', value: false })
 	} else if(wallet === undefined) {
-		res.status(404).json({ error: 'Missing \'wallet\'', value: false })
+		res.status(400).json({ error: 'Missing \'wallet\'', value: false })
 	} else if(typeof wallet !== 'string') {
-		res.status(405).json({ error: 'Invalid \'wallet\'', value: false })
+		res.status(400).json({ error: 'Invalid \'wallet\'', value: false })
 	} else if(transactionHash === undefined) {
-		res.status(406).json({ error: 'Missing \'transactionHash\'', value: false })
+		res.status(400).json({ error: 'Missing \'transactionHash\'', value: false })
 	} else if(typeof transactionHash !== 'string') {
-		res.status(407).json({ error: 'Invalid \'transactionHash\'', value: false })
+		res.status(400).json({ error: 'Invalid \'transactionHash\'', value: false })
 	} else if(wallet === undefined) {
-		res.status(408).json({ error: 'Missing \'wallet\'', value: false })
+		res.status(400).json({ error: 'Missing \'wallet\'', value: false })
 	} else if(typeof wallet !== 'string') {
-		res.status(409).json({ error: 'Invalid \'wallet\'', value: false })
+		res.status(400).json({ error: 'Invalid \'wallet\'', value: false })
 	} else if(sender === undefined) {
-		res.status(410).json({ error: 'Missing \'sender\'', value: false })
+		res.status(400).json({ error: 'Missing \'sender\'', value: false })
 	} else if(typeof sender !== 'string') {
-		res.status(411).json({ error: 'Invalid \'sender\'', value: false })
+		res.status(400).json({ error: 'Invalid \'sender\'', value: false })
 	} else if(to === undefined) {
-		res.status(412).json({ error: 'Missing \'to\'', value: false })
+		res.status(400).json({ error: 'Missing \'to\'', value: false })
 	} else if(typeof to !== 'string') {
-		res.status(413).json({ error: 'Invalid \'to\'', value: false })
+		res.status(400).json({ error: 'Invalid \'to\'', value: false })
 	} else {
 		const exists = await doesMappingExist(id, sender, to)
 		console.log(exists)

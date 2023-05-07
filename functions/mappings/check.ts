@@ -6,15 +6,15 @@ async function check(req: Request, res: Response) {
 	if(id === undefined) {
 		res.status(400).json({ error: 'Missing ID', value: false })
 	} else if(typeof id !== 'string') {
-		res.status(401).json({ error: 'Invalid ID', value: false })
+		res.status(400).json({ error: 'Invalid ID', value: false })
 	} else if(from === undefined) {
-		res.status(403).json({ error: 'Missing \'from\'', value: false })
+		res.status(400).json({ error: 'Missing \'from\'', value: false })
 	} else if(typeof from !== 'string') {
-		res.status(404).json({ error: 'Invalid \'from\'', value: false })
+		res.status(400).json({ error: 'Invalid \'from\'', value: false })
 	} else if(to === undefined) {
-		res.status(405).json({ error: 'Missing \'to\', value: false' })
+		res.status(400).json({ error: 'Missing \'to\', value: false' })
 	} else if(typeof to !== 'string') {
-		res.status(406).json({ error: 'Invalid \'to\'', value: false })
+		res.status(400).json({ error: 'Invalid \'to\'', value: false })
 	} else {
 		const ret = await doesMappingExist(id, from, to)
 		if(ret.error) {
