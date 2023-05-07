@@ -12,6 +12,10 @@ This repository contains the code for the Questbook API endpoint (https://api.qu
 3. Run `sls offline` and wait for the TypeScript to compile.
 4. The API is ready to be tested.
 
+## How to deploy to Serverless
+1. Make sure you have the AWS Credentials set
+2. Run `sls deploy`
+
 ## Endpoint Information
 
 ### `/zapier/v1/:chain/:event`
