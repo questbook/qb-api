@@ -1,8 +1,4 @@
-query ProposalSubmitted(
-  $lowerLimit: Int!
-  $upperLimit: Int!
-  $grantId: ID!
-) {
+query ProposalSubmitted($lowerLimit: Int!, $upperLimit: Int!, $grantId: ID!) {
   grant(id: $grantId, subgraphError: allow) {
     id
     title
@@ -28,19 +24,12 @@ query ProposalSubmitted(
       }
     ) {
       id
-      projectName: fields(where: { field_ends_with: "projectName" }) {
+      walletAddress
+      fields {
+        id
         values {
-          title: value
-        }
-      }
-      applicantEmail: fields(where: { field_ends_with: "applicantEmail" }) {
-        values {
-          email: value
-        }
-      }
-      applicantAddress: fields(where: { field_ends_with: "applicantAddress" }) {
-        values {
-          address: value
+          id
+          value
         }
       }
       createdBy: applicantId
