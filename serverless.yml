@@ -1,5 +1,5 @@
-org: richik
-app: webhooks-qb
+# org: richik
+# app: webhooks-qb
 service: qb-api
 frameworkVersion: '3'
 
