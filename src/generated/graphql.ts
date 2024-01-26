@@ -5440,15 +5440,15 @@ export type ReviewerSubmittedReviewQuery = { __typename?: 'Query', grant?: { __t
 
 
 export const PayoutStatusDocument = gql`
-    query PayoutStatus($lowerLimit: Int!, $upperLimit: Int!, $grantId: ID!) {
-  grant(id: $grantId, subgraphError: allow) {
-    id
+query PayoutStatus($lowerLimit: Float!, $upperLimit: Float!, $grantId: String!) {
+  grant(_id: $grantId) {
+    id:_id
     workspace {
-      id
+      id: _id
       chain: supportedNetworks
     }
     reward {
-      id
+      id: _id
       committed
       asset
       token {
@@ -5456,24 +5456,37 @@ export const PayoutStatusDocument = gql`
         decimal
       }
     }
-    fundTransfers(
-      where: {createdAtS_gt: $lowerLimit, createdAtS_lte: $upperLimit, type_in: [funds_disbursed_from_safe, funds_disbursed_from_wallet]}
-      orderBy: createdAtS
-      orderDirection: desc
-    ) {
-      id
+    fundTransfers:fundsTransferFilterByCreatedAtS(
+      filter: {
+        _operators:{
+          createdAtS: {
+            gt:$lowerLimit,
+            lte:$upperLimit
+          },
+          type: {
+            in: ["funds_disbursed_from_safe", "funds_disbursed_from_wallet"]
+          }
+        }
+      }
+      sort: CREATEDATS_DESC
+   ) {
+      id: _id
       type
       amount
       status
       milestone {
-        id
+        id:_id
         title
         amount
         amountPaid
       }
       application {
-        id
-        projectName: fields(where: {field_ends_with: "projectName"}) {
+        id:_id
+        projectName: fieldFilterBySection(
+          filter:{
+            field: "projectName"
+          }
+        ){
           values {
             title: value
           }
@@ -5514,33 +5527,42 @@ export type PayoutStatusQueryHookResult = ReturnType<typeof usePayoutStatusQuery
 export type PayoutStatusLazyQueryHookResult = ReturnType<typeof usePayoutStatusLazyQuery>;
 export type PayoutStatusQueryResult = Apollo.QueryResult<PayoutStatusQuery, PayoutStatusQueryVariables>;
 export const ProposalSubmittedDocument = gql`
-    query ProposalSubmitted($lowerLimit: Int!, $upperLimit: Int!, $grantId: ID!) {
-  grant(id: $grantId, subgraphError: allow) {
-    id
+query ProposalSubmitted($lowerLimit: Float!, $upperLimit: Float!, $grantId: String!) {
+  grant(_id: $grantId) {
+    id:_id
     title
     reward {
-      id
+      id:_id
       asset
       committed
       token {
-        id
+        id:_id
         label
         decimal
       }
     }
     workspace {
-      id
+      id:_id
       chain: supportedNetworks
     }
-    applications(
-      where: {updatedAtS_gt: $lowerLimit, updatedAtS_lte: $upperLimit, version: 1}
+    applications: applicationsStateFilter (
+      filter: {
+        _operators: {
+          updatedAtS: {
+						gt: $lowerLimit,
+            lte: $upperLimit
+          }
+        },
+        version: 1
+      },
+      sort: CREATEDATS_ASC
     ) {
-      id
+      id:_id
       walletAddress
       fields {
-        id
+        id:_id
         values {
-          id
+          id:_id
           value
         }
       }
@@ -5548,7 +5570,7 @@ export const ProposalSubmittedDocument = gql`
       createdAtS
       updatedAtS
       milestones {
-        id
+        id:_id
         title
         amount
         amountPaid
@@ -5592,35 +5614,47 @@ export type ProposalSubmittedQueryHookResult = ReturnType<typeof useProposalSubm
 export type ProposalSubmittedLazyQueryHookResult = ReturnType<typeof useProposalSubmittedLazyQuery>;
 export type ProposalSubmittedQueryResult = Apollo.QueryResult<ProposalSubmittedQuery, ProposalSubmittedQueryVariables>;
 export const ProposalUpdatedDocument = gql`
-    query ProposalUpdated($lowerLimit: Int!, $upperLimit: Int!, $grantId: ID!) {
-  grant(id: $grantId, subgraphError: allow) {
-    id
+query ProposalUpdated($lowerLimit: Float!, $upperLimit: Float!, $grantId: String!) {
+  grant(_id: $grantId) {
+    id:_id
     title
     workspace {
-      id
+      id:_id
       chain: supportedNetworks
     }
     reward {
-      id
+      id:_id
       asset
       committed
       token {
-        id
+        id:_id
         label
         decimal
       }
     }
-    applications(
-      where: {updatedAtS_gt: $lowerLimit, updatedAtS_lte: $upperLimit, version_gt: 1, state_not_in: [submitted]}
-      orderBy: updatedAtS
-      orderDirection: desc
+    applications:applicationsStateFilter(
+      filter: {
+        _operators: {
+           updatedAtS: {
+            gt: $lowerLimit,
+            lte:  $upperLimit
+          },
+          version: {
+            gt: 1
+          },
+          state: {
+            nin: ["submitted"]
+          }
+        },
+      },
+      sort: CREATEDATS_DESC
     ) {
-      id
+      id:_id
       walletAddress
       fields {
-        id
+        id:_id
         values {
-          id
+          id:_id
           value
         }
       }
@@ -5628,7 +5662,7 @@ export const ProposalUpdatedDocument = gql`
       createdAtS
       updatedAtS
       milestones {
-        id
+        id:_id
         title
         amount
         amountPaid
@@ -5673,17 +5707,24 @@ export type ProposalUpdatedQueryHookResult = ReturnType<typeof useProposalUpdate
 export type ProposalUpdatedLazyQueryHookResult = ReturnType<typeof useProposalUpdatedLazyQuery>;
 export type ProposalUpdatedQueryResult = Apollo.QueryResult<ProposalUpdatedQuery, ProposalUpdatedQueryVariables>;
 export const ReviewerSubmittedReviewDocument = gql`
-    query ReviewerSubmittedReview($lowerLimit: Int!, $upperLimit: Int!, $grantId: ID!) {
-  grant(id: $grantId, subgraphError: allow) {
-    id
+query ReviewerSubmittedReview($lowerLimit: Float!, $upperLimit: Float!, $grantId: String!) {
+  grant(_id: $grantId) {
+    id: _id
     applications {
-      id
-      reviews(where: {createdAtS_gt: $lowerLimit, createdAtS_lte: $upperLimit}) {
-        id
+      id: _id
+      reviews: reviewsFilter(filter: {
+        _operators: {
+           createdAtS: {
+            gt: $lowerLimit,
+            lte: $upperLimit
+          }
+        }
+      }) { 
+      id:_id
         reviewer {
           actorId
           workspace {
-            id
+            id:_id
             chain: supportedNetworks
           }
         }

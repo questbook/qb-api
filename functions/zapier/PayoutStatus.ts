@@ -1,6 +1,6 @@
+import { ethers } from 'ethers'
 import { Request, Response } from 'express'
 import { work } from '../../src/utils/work'
-import { ethers } from 'ethers'
 
 async function payoutStatus(req: Request, res: Response) {
 	const { chain } = req.params

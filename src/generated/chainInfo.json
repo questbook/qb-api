@@ -34,7 +34,7 @@
 				"address": "0x0000000000000000000000000000000000000002"
 			}
 		},
-		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-goerli-testnet",
+		"subgraphClientUrl": "https://api-grants.questbook.app/graphql",
 		"rpcUrls": [
 			"https://goerli.infura.io/v3/"
 		]
@@ -89,7 +89,7 @@
 				"address": "0x0000000000000000000000000000000000000002"
 			}
 		},
-		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-optimism-mainnet",
+		"subgraphClientUrl": "https://api-grants.questbook.app/graphql",
 		"rpcUrls": [
 			"https://optimism-mainnet.infura.io/v3/"
 		]
@@ -209,7 +209,7 @@
 				"address": "0x0000000000000000000000000000000000000002"
 			}
 		},
-		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-polygon-mainnet",
+		"subgraphClientUrl": "https://api-grants.questbook.app/graphql",
 		"rpcUrls": [
 			"https://polygon-mainnet.infura.io/v3/",
 			"https://polygon-mainnet.g.alchemy.com/v2/"
@@ -245,7 +245,7 @@
 				"address": "0x0000000000000000000000000000000000000002"
 			}
 		},
-		"subgraphClientUrl": "https://the-graph.questbook.app/subgraphs/name/qb-subgraph-celo-mainnet",
+		"subgraphClientUrl": "https://api-grants.questbook.app/graphql",
 		"rpcUrls": [
 			"https://forno.celo.org"
 		]
