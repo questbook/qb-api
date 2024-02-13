@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import { Request, Response } from 'express'
 import { work } from '../../src/utils/work'
 
@@ -7,8 +6,6 @@ async function proposalUpdated(req: Request, res: Response) {
 	const { grantId } = req.body
 	if(grantId === undefined) {
 		res.status(400).json({ error: 'Missing grantId' })
-	} else if(ethers.utils.isAddress(grantId) === false) {
-		res.status(400).json({ error: 'Invalid grantId' })
 	} else {
 		try {
 			const data = await work('ProposalUpdated', chain, { grantId })

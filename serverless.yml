@@ -2,6 +2,7 @@
 # app: webhooks-qb
 service: qb-api
 frameworkVersion: '3'
+useDotenv: true
 
 provider:
   name: aws
