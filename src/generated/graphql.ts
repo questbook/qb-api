@@ -5419,7 +5419,7 @@ export type ProposalSubmittedQueryVariables = Exact<{
 }>;
 
 
-export type ProposalSubmittedQuery = { __typename?: 'Query', grant?: { __typename?: 'Grant', id: string, title: string, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null }, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, applications: Array<{ __typename?: 'GrantApplication', id: string, walletAddress: string, createdAtS: number, updatedAtS: number, state: ApplicationState, createdBy: string, fields: Array<{ __typename?: 'GrantFieldAnswer', id: string, values: Array<{ __typename?: 'GrantFieldAnswerItem', id: string, value: string }> }>, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, state: MilestoneState, feedbackFromDAO?: string | null, feedbackFromDev?: string | null }> }> } | null };
+export type ProposalSubmittedQuery = { __typename?: 'Query', grant?: { __typename?: 'Grant', id: string, title: string, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null }, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, applications: Array<{ __typename?: 'GrantApplication', id: string, walletAddress: string, createdAtS: number, updatedAtS: number, state: ApplicationState, createdBy: string, fields: Array<{ __typename?: 'GrantFieldAnswer', id: string, values: Array<{ __typename?: 'GrantFieldAnswerItem', id: string, value: string }> }>, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, state: MilestoneState, feedbackFromDAO?: string | null, feedbackFromDev?: string | null, details?: string | undefined, deadline?: string | undefined }> }> } | null };
 
 export type ProposalUpdatedQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -5578,6 +5578,8 @@ query ProposalSubmitted($lowerLimit: Float!, $upperLimit: Float!, $grantId: Stri
         feedbackFromDAO: feedbackDao
         feedbackFromDev: feedbackDev
         state
+        details
+        deadline
       }
       state
     }

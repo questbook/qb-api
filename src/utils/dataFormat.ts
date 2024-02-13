@@ -90,6 +90,8 @@ function formatProposalSubmittedData(result: ProposalSubmittedQuery) {
 					state: milestone.state,
 					feedbackFromDao: milestone.feedbackFromDAO,
 					feedbackFromDev: milestone.feedbackFromDev,
+					details: milestone.details,
+					deadline: milestone.deadline,
 				}
 			}),
 			totalMilestoneAmount: getTokenDetails(
