@@ -572,7 +572,8 @@ export type FundsTransfer = {
 export enum FundsTransferStatusType {
   Cancelled = 'cancelled',
   Executed = 'executed',
-  Queued = 'queued'
+  Queued = 'queued',
+  Failed = 'failed'
 }
 
 export enum FundsTransferType {
@@ -5410,7 +5411,7 @@ export type PayoutStatusQueryVariables = Exact<{
 }>;
 
 
-export type PayoutStatusQuery = { __typename?: 'Query', grant?: { __typename?: 'Grant', id: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, committed: string, asset: string, token?: { __typename?: 'Token', label: string, decimal: number } | null }, fundTransfers: Array<{ __typename?: 'FundsTransfer', id: string, type: FundsTransferType, amount: string, status: FundsTransferStatusType, milestone?: { __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string } | null, application?: { __typename?: 'GrantApplication', id: string, projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }> } | null }> } | null };
+export type PayoutStatusQuery = { __typename?: 'Query', grant?: { __typename?: 'Grant', id: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, committed: string, asset: string, token?: { __typename?: 'Token', label: string, decimal: number } | null }, fundTransfers: Array<{ __typename?: 'FundsTransfer', id: string, type: FundsTransferType, amount: string, status: FundsTransferStatusType, milestone?: { __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string } | null, application?: { __typename?: 'GrantApplication', id: string, milestones?: { __typename?: 'ApplicationMilestone', id: string, amount: string, deadline?: string | undefined }[] | null,  projectName: Array<{ __typename?: 'GrantFieldAnswer', values: Array<{ __typename?: 'GrantFieldAnswerItem', title: string }> }> } | null }> } | null };
 
 export type ProposalSubmittedQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -5483,6 +5484,11 @@ query PayoutStatus($lowerLimit: Float!, $upperLimit: Float!, $grantId: String!) 
       }
       application {
         id:_id
+        milestones {
+          id: _id
+          deadline
+          amount
+        }
         projectName: fieldFilterBySection(
           filter:{
             field: "projectName"

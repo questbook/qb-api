@@ -53,7 +53,9 @@ function formatProposalSubmittedData(result: ProposalSubmittedQuery) {
 						.replace(/([A-Z])/g, ' $1')
 						.trim()
 						.replace(/^./, (str) => str.toUpperCase())
-				] = field.values[0].value
+				] = field?.id?.split('.')[1].trim() === 'projectDetails' ?
+					//@ts-ignore
+					 typeof field?.values[0]?.value === 'string' ? JSON.parse(field?.values[0]?.value)?.blocks?.map((block: { text: string }) => block.text).join() : field?.values[0]?.value?.blocks?.map((block) => block.text).join() : field.values[0].value
 			}
 		}
 
@@ -90,8 +92,8 @@ function formatProposalSubmittedData(result: ProposalSubmittedQuery) {
 					state: milestone.state,
 					feedbackFromDao: milestone.feedbackFromDAO,
 					feedbackFromDev: milestone.feedbackFromDev,
-					details: milestone.details,
-					deadline: milestone.deadline,
+					details: milestone.details ?? '',
+					deadline: milestone.deadline ?? '',
 				}
 			}),
 			totalMilestoneAmount: getTokenDetails(
@@ -111,6 +113,8 @@ function formatProposalSubmittedData(result: ProposalSubmittedQuery) {
 			fields: {
 				...fieldMap,
 			},
+			nextPayoutAmount: application.milestones[0]?.amount ?? 0,
+			nextPayoutDate: application.milestones[0]?.deadline ?? '',
 		}
 
 		// logger.info({ data, retData }, `${GrantAppliedTo}: FORMAT DATA`)
@@ -237,6 +241,12 @@ function formatPayoutStatusData(result: PayoutStatusQuery) {
           grant.workspace.chain[0] as SupportedNetwork
 				)
 			),
+			nextPayoutAmount: parseInt(fundTransfer?.milestone?.id?.split('.')[0]) === fundTransfer?.application?.milestones?.length - 1 ?
+				0 : fundTransfer?.application?.milestones?.[parseInt(fundTransfer?.milestone?.id?.split('.')[0]) + 1]?.amount ?? 0,
+			nextMilestone: parseInt(fundTransfer?.milestone?.id?.split('.')[0]) === fundTransfer?.application?.milestones?.length - 1 ? parseInt(fundTransfer?.milestone?.id?.split('.')[0]) :
+				parseInt(fundTransfer?.milestone?.id?.split('.')[0]) + 1,
+			nextPayoutDate: parseInt(fundTransfer?.milestone?.id?.split('.')[0]) === fundTransfer?.application?.milestones?.length - 1 ?
+				'' : fundTransfer?.application?.milestones?.[parseInt(fundTransfer?.milestone?.id?.split('.')[0]) + 1]?.deadline ?? '',
 			status: fundTransfer.status,
 		}
 
