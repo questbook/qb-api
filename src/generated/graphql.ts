@@ -5429,7 +5429,7 @@ export type ProposalUpdatedQueryVariables = Exact<{
 }>;
 
 
-export type ProposalUpdatedQuery = { __typename?: 'Query', grant?: { __typename?: 'Grant', id: string, title: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null }, applications: Array<{ __typename?: 'GrantApplication', id: string, walletAddress: string, createdAtS: number, updatedAtS: number, state: ApplicationState, feedbackDao?: string | null, createdBy: string, fields: Array<{ __typename?: 'GrantFieldAnswer', id: string, values: Array<{ __typename?: 'GrantFieldAnswerItem', id: string, value: string }> }>, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, state: MilestoneState, feedbackFromDAO?: string | null, feedbackFromDev?: string | null }> }> } | null };
+export type ProposalUpdatedQuery = { __typename?: 'Query', grant?: { __typename?: 'Grant', id: string, title: string, workspace: { __typename?: 'Workspace', id: string, chain: Array<SupportedNetwork> }, reward: { __typename?: 'Reward', id: string, asset: string, committed: string, token?: { __typename?: 'Token', id: string, label: string, decimal: number } | null }, applications: Array<{ __typename?: 'GrantApplication', id: string, walletAddress: string, createdAtS: number, updatedAtS: number, state: ApplicationState, feedbackDao?: string | null, createdBy: string, fields: Array<{ __typename?: 'GrantFieldAnswer', id: string, values: Array<{ __typename?: 'GrantFieldAnswerItem', id: string, value: string }> }>, milestones: Array<{ __typename?: 'ApplicationMilestone', id: string, title: string, amount: string, amountPaid: string, state: MilestoneState, feedbackFromDAO?: string | null, feedbackFromDev?: string | null, details?: string | undefined, deadline?: string | undefined }> }> } | null };
 
 export type ReviewerSubmittedReviewQueryVariables = Exact<{
   lowerLimit: Scalars['Int'];
@@ -5467,8 +5467,9 @@ query PayoutStatus($lowerLimit: Float!, $upperLimit: Float!, $grantId: String!) 
           },
           type: {
             in: ["funds_disbursed_from_safe", "funds_disbursed_from_wallet"]
-          }
-        }
+          },
+        },
+        status: "executed"
       }
       sort: CREATEDATS_DESC
    ) {
@@ -5562,7 +5563,7 @@ query ProposalSubmitted($lowerLimit: Float!, $upperLimit: Float!, $grantId: Stri
         },
         version: 1
       },
-      sort: CREATEDATS_ASC
+      sort: CREATEDATS_DESC
     ) {
       id:_id
       walletAddress
@@ -5656,7 +5657,7 @@ query ProposalUpdated($lowerLimit: Float!, $upperLimit: Float!, $grantId: String
           }
         },
       },
-      sort: CREATEDATS_DESC
+      sort: UPDATEDATS_DESC
     ) {
       id:_id
       walletAddress
@@ -5678,6 +5679,8 @@ query ProposalUpdated($lowerLimit: Float!, $upperLimit: Float!, $grantId: String
         feedbackFromDAO: feedbackDao
         feedbackFromDev: feedbackDev
         state
+        details
+        deadline
       }
       state
       feedbackDao
