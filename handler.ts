@@ -58,6 +58,28 @@ app.post("/zapier/v1/:chain/:event", async (req: Request, res: Response) => {
   }
 });
 
+app.get('/github/oauth', async(req: Request, res: Response) => {
+  try{
+  const requestToken = req.query.code
+  const clientID = process.env.GITHUB_CLIENT_ID
+  const clientSecret = process.env.GITHUB_CLIENT_SECRET
+  
+  const data = await fetch(`https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`,
+  {
+    method: 'POST',
+    headers: {
+      accept: 'application/json'
+    }
+  })
+  const response = await data.json()
+  const accessToken = response.access_token
+  return res.redirect(`https://questbook.app/?access_token=${accessToken}&builder_modal=true`)
+} catch(e){
+  console.log(e)
+  return res.redirect('https://questbook.app/?builder_modal=true')
+}
+})
+
 app.post("/mapping/:event", async (req: Request, res: Response) => {
   const { event } = req.params;
 

@@ -90,8 +90,6 @@ function formatProposalSubmittedData(result: ProposalSubmittedQuery) {
             grant.workspace.chain[0] as SupportedNetwork
 					),
 					state: milestone.state,
-					feedbackFromDao: milestone.feedbackFromDAO,
-					feedbackFromDev: milestone.feedbackFromDev,
 					details: milestone.details ?? '',
 					deadline: milestone.deadline ?? '',
 				}
@@ -158,7 +156,6 @@ function formatProposalUpdatedData(result: ProposalUpdatedQuery) {
 			grantID: grant.id,
 			grantTitle: grant.title,
 			state: application.state,
-			feedback: application.feedbackDao,
 			currency: getRewardToken(
 				grant.reward,
 				getSupportedChainIdFromSupportedNetwork(
@@ -181,8 +178,6 @@ function formatProposalUpdatedData(result: ProposalUpdatedQuery) {
             grant.workspace.chain[0] as SupportedNetwork
 					),
 					state: milestone.state,
-					feedbackFromDao: milestone.feedbackFromDAO,
-					feedbackFromDev: milestone.feedbackFromDev,
 					details: milestone.details ?? '',
 					deadline: milestone.deadline ?? '',
 				}
