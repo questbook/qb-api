@@ -9,6 +9,7 @@ import proposalSubmitted from "./functions/zapier/ProposalSubmitted";
 import reviewerSubmittedReview from "./functions/zapier/ReviewerSubmittedReview";
 import { ZapierEvent } from "./src/types";
 import { CHAIN_INFO } from "./src/configs/chains";
+import fetch from 'cross-fetch'
 
 const app = express();
 
