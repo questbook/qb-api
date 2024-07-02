@@ -47,15 +47,28 @@ function formatProposalSubmittedData(result: ProposalSubmittedQuery) {
 			if(field.id.includes('customField') && field.values.length > 0) {
 				fieldMap[field.id.split('-')[1]] = field.values[0].value
 			} else if(field.values.length > 0) {
-				fieldMap[
-					field.id
-						.split('.')[1]
-						.replace(/([A-Z])/g, ' $1')
-						.trim()
-						.replace(/^./, (str) => str.toUpperCase())
-				] = field?.id?.split('.')[1].trim() === 'projectDetails' ?
+				const key = field.id
+					.split('.')[1]
+					.replace(/([A-Z])/g, ' $1')
+					.trim()
+					.replace(/^./, (str) => str.toUpperCase())
+
+				let value: string
+				if(field.id.split('.')[1].trim() === 'projectDetails') {
 					//@ts-ignore
-					 typeof field?.values[0]?.value === 'string' ? JSON.parse(field?.values[0]?.value)?.blocks?.map((block: { text: string }) => block.text).join() : field?.values[0]?.value?.blocks?.map((block) => block.text).join() : field.values[0].value
+					if(typeof field.values[0].value === 'string') {
+						value = JSON.parse(field.values[0].value)
+							?.blocks?.map((block: { text: string }) => block.text)
+							.join()
+					} else {
+						//@ts-ignore
+						value = field.values[0].value?.blocks?.map((block: { text: string }) => block.text).join()
+					}
+				} else {
+					value = field.values[0].value
+				}
+
+				fieldMap[key] = value
 			}
 		}
 
@@ -123,6 +136,7 @@ function formatProposalSubmittedData(result: ProposalSubmittedQuery) {
 	return ret
 }
 
+
 function formatProposalUpdatedData(result: ProposalUpdatedQuery) {
 	const ret = []
 	const grant = result.grant
@@ -132,19 +146,33 @@ function formatProposalUpdatedData(result: ProposalUpdatedQuery) {
 
 	for(const application of grant.applications) {
 		const fieldMap: { [key: string]: string } = {}
+
 		for(const field of application.fields) {
 			if(field.id.includes('customField') && field.values.length > 0) {
-				fieldMap[field.id.split('-')[1]] = field.values[0].value
+				fieldMap[field.id.split('-')[1]] = field.values[0].value?.slice(0, 2000)
 			} else if(field.values.length > 0) {
-				fieldMap[
-					field.id
-						.split('.')[1]
-						.replace(/([A-Z])/g, ' $1')
-						.trim()
-						.replace(/^./, (str) => str.toUpperCase())
-				] = field?.id?.split('.')[1].trim() === 'projectDetails' ?
-				//@ts-ignore
-				 typeof field?.values[0]?.value === 'string' ? JSON.parse(field?.values[0]?.value)?.blocks?.map((block: { text: string }) => block.text).join() : field?.values[0]?.value?.blocks?.map((block) => block.text).join() : field.values[0].value
+				const key = field.id
+					.split('.')[1]
+					.replace(/([A-Z])/g, ' $1')
+					.trim()
+					.replace(/^./, (str) => str.toUpperCase())
+
+				let value: string
+				if(field.id.split('.')[1].trim() === 'projectDetails') {
+					//@ts-ignore
+					if(typeof field.values[0].value === 'string') {
+						value = JSON.parse(field.values[0].value)
+							?.blocks?.map((block: { text: string }) => block.text)
+							.join()
+					} else {
+						//@ts-ignore
+						value = field.values[0].value?.blocks?.map((block: { text: string }) => block.text).join()
+					}
+				} else {
+					value = field.values[0].value
+				}
+
+				fieldMap[key] = value?.slice(0, 2000)
 			}
 		}
 
