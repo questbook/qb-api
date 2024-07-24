@@ -4,6 +4,7 @@ import express, { Request, Response } from 'express'
 import serverless from 'serverless-http'
 import check from './functions/mappings/check'
 import create from './functions/mappings/create'
+import { GenerateProof, VerifyProof } from './functions/reclaim'
 import payoutStatus from './functions/zapier/PayoutStatus'
 import proposalSubmitted from './functions/zapier/ProposalSubmitted'
 import proposalUpdated from './functions/zapier/ProposalUpdated'
@@ -84,6 +85,10 @@ app.get('/github/oauth', async(req: Request, res: Response) => {
 		return res.redirect('https://questbook.app/?builder_modal=true')
 	}
 })
+
+app.get('/reclaim/generate', bodyParser.json(), GenerateProof)
+
+app.post('/reclaim/verify', express.text({ type: '*/*' }), VerifyProof)
 
 app.post('/mapping/:event', async(req: Request, res: Response) => {
 	const { event } = req.params

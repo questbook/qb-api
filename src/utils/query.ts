@@ -43,4 +43,34 @@ async function executeQuery(
 	return data
 }
 
+
+export async function executeMutation(query: DocumentNode, variables: {
+	address: string
+	type: string
+	proof: object
+}) {
+	const link = new HttpLink({
+	  uri: 'http://localhost:5000/graphql',
+	  fetch,
+	})
+	const client = new ApolloClient({
+	  link,
+	  cache: new InMemoryCache(),
+	})
+
+	const response = await client.mutate({
+	  mutation: query,
+	  variables,
+	  context: {
+			headers: {
+		  Authorization: process.env.API_KEY,
+			},
+	  },
+	})
+	const { data } = response
+
+	return data
+}
+
+
 export default executeQuery

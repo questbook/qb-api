@@ -5777,3 +5777,16 @@ export function useReviewerSubmittedReviewLazyQuery(baseOptions?: Apollo.LazyQue
 export type ReviewerSubmittedReviewQueryHookResult = ReturnType<typeof useReviewerSubmittedReviewQuery>;
 export type ReviewerSubmittedReviewLazyQueryHookResult = ReturnType<typeof useReviewerSubmittedReviewLazyQuery>;
 export type ReviewerSubmittedReviewQueryResult = Apollo.QueryResult<ReviewerSubmittedReviewQuery, ReviewerSubmittedReviewQueryVariables>;
+
+
+export const updateProof = gql`
+mutation updateProof($address: String!, $type: String!, $proof: JSON!){
+  updateProof(address: $address, type: $type, proof: $proof){
+    recordId
+    record{
+      _id
+    }
+  }
+}
+`;
+
